@@ -32,13 +32,29 @@ Most of the time you want the size of the `Focusable` to match the size of its c
 You can nest `Focusable`s, in this case the best candidate for the focus is first attempted to be found within the same `Focusable` parent.
 This is useful when creating sections of the UI, e.g. Side Menu where the `Focusable` items are not necessarily positioned to each other closer than to the items from the Main section
 
-##### Props
+#### Props
 
-| Display name    | React name                                                                                                                                        | Type                                                                | Required? | Default       | Description                                                                                                                                                                                                                                                                                                                                                                                                                      |
-| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- | --------- | ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Key             | `focusableKey`                                                                                                                                    | string                                                              | yes       | random string | Identifier of a `Focusable`. Has to be unique among the `Focusable` siblings                                                                                                                                                                                                                                                                                                                                                     |
-| Focus prop      | `focusProp`                                                                                                                                       | string                                                              | no        | -             | Name of the child prop that will be updated when `Focusable` receives/loses focus                                                                                                                                                                                                                                                                                                                                                |
-| Focus prop type | `focusPropType`                                                                                                                                   | string, one of `"string"` or `"boolean"` or `"number"` or `"color"` | no        | -             | Type of `focusProp`                                                                                                                                                                                                                                                                                                                                                                                                              |
-| Focused value   | Depends on the value of `focusPropType` prop. Either `focusedValueString` or `focusedValueBoolean` or `focusedValueNumber` or `focusedValueColor` | Depends on the value of `focusPropType` prop.                       | no        | -             | Value that is passed to the child's prop when the `Focusable` is focused                                                                                                                                                                                                                                                                                                                                                         |
-| Blurred value   | Depends on the value of `focusPropType` prop. Either `blurredValueString` or `blurredValueBoolean` or `blurredValueNumber` or `blurredValueColor` | Depends on the value of `focusPropType` prop.                       | no        | -             | Value that is passed to the child's prop when the `Focusable` is blurred                                                                                                                                                                                                                                                                                                                                                         |
-| -               | `onFocus`                                                                                                                                         | (focusablePath: string[]) => void                                   | no        | -             | Function that is called when the `Focusable` receives focus. Can be provided via [code overrides](https://framer.gitbook.io/framer/code/code-overrides). Receives `focusablePath` which is an array of `focusableKey`s of all `Focusable`s in the hierarchy from the root `Focusable` to the current one. Can be useful for saving the focus state or react to the focus updates, e.g. manual scrolling to the focused component |
+##### **Key** - `focusableKey?: string`
+
+Set to a randomly generated string by default.
+Identifier of a `Focusable`. Has to be unique among the `Focusable` siblings
+
+##### **Focus prop** - `focusProp?: string`
+
+Name of the child prop that will be updated when `Focusable` receives/loses focus
+
+##### **Focus prop type** - `focusPropType?: "string" | "boolean" | "number" | "color"`
+
+Type of `focusProp`
+
+##### **Focused value** - `focusedValueString?: string` or `focusedValueBoolean?: boolean` or `focusedValueNumber?: number` or `focusedValueColor?: string`
+
+Value that is passed to the child's prop when the `Focusable` is focused
+
+##### **Blurred value** - `blurredValueString?: string` or `blurredValueBoolean?: boolean` or `blurredValueNumber: number` or `blurredValueColor: string`
+
+Value that is passed to the child's prop when the `Focusable` is blurred
+
+##### `onFocus?: (focusablePath: string[]) => void`
+
+Function that is called when the `Focusable` receives focus. Can be provided via [code overrides](https://framer.gitbook.io/framer/code/code-overrides). Receives `focusablePath` which is an array of `focusableKey`s of all `Focusable`s in the hierarchy from the root `Focusable` to the current one. Can be useful for saving the focus state or reacting to the focus updates, e.g. manual scrolling to the focused component
