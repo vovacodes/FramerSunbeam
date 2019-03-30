@@ -14,18 +14,6 @@ Provides two easy to use code components.
 -   Press arrow keys on your keyboard/gamepad/tv remote
 -   Enjoy spatial navigation magic happen
 
-![Connect SunbeamContainer](SunbeamContainer-optimised.gif)
-
-<p align="center">Connect SunbeamContainer</p>
-
-![Connect Focusable](UseFocusable-optimised.gif)
-
-<p align="center">Connect Focusable</p>
-
-![Run preview](Preview-optimised.gif)
-
-<p align="center">Run preview</p>
-
 ## Components
 
 ### `SunbeamContainer`
