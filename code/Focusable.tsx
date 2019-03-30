@@ -88,7 +88,10 @@ export function Focusable({
     blurredValueNumber,
     blurredValueColor,
 }: Props) {
-    const randomKey = useMemo(() => Math.floor(Math.random() * 100000).toString(), [])
+    const randomKey = useMemo(
+        () => Math.floor(Math.random() * 100000).toString(),
+        []
+    )
     const focusKey = focusableKey || randomKey
 
     if (RenderTarget.current() === RenderTarget.canvas) {

@@ -69,7 +69,11 @@ export function SunbeamContainer({ height, width, children }: Props) {
         return <>{content}</>
     }
 
-    return <SunbeamProvider focusManager={focusManager}>{children}</SunbeamProvider>
+    return (
+        <SunbeamProvider focusManager={focusManager}>
+            {children}
+        </SunbeamProvider>
+    )
 }
 
 addPropertyControls(SunbeamContainer, {
@@ -77,7 +81,10 @@ addPropertyControls(SunbeamContainer, {
 })
 
 type EventListener = (evt: Event) => void
-function useGlobalEventListener<E extends Event>(eventName: string, listener: EventListener) {
+function useGlobalEventListener<E extends Event>(
+    eventName: string,
+    listener: EventListener
+) {
     useEffect(() => {
         window.addEventListener(eventName, listener)
 
