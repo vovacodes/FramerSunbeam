@@ -57,12 +57,17 @@ export function SunbeamContainer({ height, width, children }: Props) {
                         height,
                         width,
                         display: "flex",
+                        flexDirection: "column",
                         alignItems: "center",
                         justifyContent: "center",
+                        fontFamily: "monospace",
                         fontSize: 30,
                     }}
                 >
-                    Link this component to a frame
+                    <div>SunbeamContainer</div>
+                    <div style={{ textAlign: "center" }}>
+                        Link this component to a Frame
+                    </div>
                 </div>
             )
 

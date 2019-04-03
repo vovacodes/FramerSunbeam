@@ -1,56 +1,13 @@
 import * as React from "react"
 import { useMemo, useEffect, useRef } from "react"
-import { Focusable as SunbeamFocusable } from "react-sunbeam"
+import { Focusable as SunbeamFocusable, useSunbeam } from "react-sunbeam"
 import { addPropertyControls, ControlType, RenderTarget } from "framer"
-
-function getFocusedValue(
-    focusPropType: "string" | "boolean" | "number" | "color",
-    focusedValueString: string,
-    focusedValueBoolean: boolean,
-    focusedValueNumber: number,
-    focusedValueColor: string
-) {
-    switch (focusPropType) {
-        case "string":
-            return focusedValueString
-
-        case "boolean":
-            return focusedValueBoolean
-
-        case "number":
-            return focusedValueNumber
-
-        case "color":
-            return focusedValueColor
-    }
-}
-
-function getBlurredValue(
-    focusPropType: "string" | "boolean" | "number" | "color",
-    blurredValueString: string,
-    blurredValueBoolean: boolean,
-    blurredValueNumber: number,
-    blurredValueColor: string
-) {
-    switch (focusPropType) {
-        case "string":
-            return blurredValueString
-
-        case "boolean":
-            return blurredValueBoolean
-
-        case "number":
-            return blurredValueNumber
-
-        case "color":
-            return blurredValueColor
-    }
-}
 
 interface Props {
     width: number
     height: number
     children: JSX.Element
+    tapToFocus?: boolean
     focusableKey?: string
     onFocus?: (focusablePath: ReadonlyArray<string>) => void
 
@@ -68,76 +25,24 @@ interface Props {
     blurredValueColor: string
 }
 
-export function Focusable({
-    width,
-    height,
-    children,
-    focusableKey,
-    onFocus,
-
-    focusProp,
-    focusPropType,
-
-    focusedValueString,
-    focusedValueBoolean,
-    focusedValueNumber,
-    focusedValueColor,
-
-    blurredValueString,
-    blurredValueBoolean,
-    blurredValueNumber,
-    blurredValueColor,
-}: Props) {
-    const randomKey = useMemo(
-        () => Math.floor(Math.random() * 100000).toString(),
-        []
-    )
-    const focusKey = focusableKey || randomKey
-
-    if (RenderTarget.current() === RenderTarget.canvas) {
-        return <span>{children}</span>
-    }
-
-    const focusedValue = getFocusedValue(
-        focusPropType,
-        focusedValueString,
-        focusedValueBoolean,
-        focusedValueNumber,
-        focusedValueColor
-    )
-    const blurredValue = getBlurredValue(
-        focusPropType,
-        blurredValueString,
-        blurredValueBoolean,
-        blurredValueNumber,
-        blurredValueColor
-    )
-
-    return (
-        <SunbeamFocusable focusKey={focusKey}>
-            {({ focused, path }) => (
-                <FocusableWrapper
-                    width={width}
-                    height={height}
-                    focused={focused}
-                    onFocus={() => {
-                        if (onFocus) onFocus(path)
-                    }}
-                >
-                    {React.Children.map(children, child =>
-                        React.cloneElement(child, {
-                            [focusProp]: focused ? focusedValue : blurredValue,
-                        })
-                    )}
-                </FocusableWrapper>
-            )}
-        </SunbeamFocusable>
+export function Focusable(props: Props) {
+    return RenderTarget.current() === RenderTarget.canvas ? (
+        <CanvasPresentation width={props.width} height={props.height}>
+            {props.children}
+        </CanvasPresentation>
+    ) : (
+        <PreviewPresentation {...props} />
     )
 }
 
 addPropertyControls(Focusable, {
     children: { type: ControlType.ComponentInstance, title: "Child" },
     focusableKey: { type: ControlType.String, title: "Key" },
+    tapToFocus: {
+        type: ControlType.Boolean,
+        title: "Tap to focus",
+        defaultValue: false,
+    },
     focusProp: {
         type: ControlType.String,
         title: "Focus prop",
@@ -194,16 +99,116 @@ addPropertyControls(Focusable, {
     },
 })
 
+function CanvasPresentation({
+    width,
+    height,
+    children,
+}: {
+    width: number
+    height: number
+    children: React.ReactNode
+}) {
+    return React.Children.count(children) > 0 ? (
+        children
+    ) : (
+        <div
+            style={{
+                height,
+                width,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                fontFamily: "monospace",
+                fontSize: 18,
+            }}
+        >
+            <div>Focusable</div>
+        </div>
+    )
+}
+
+function PreviewPresentation({
+    width,
+    height,
+    children,
+    focusableKey,
+    onFocus,
+
+    focusProp,
+    focusPropType,
+
+    focusedValueString,
+    focusedValueBoolean,
+    focusedValueNumber,
+    focusedValueColor,
+
+    blurredValueString,
+    blurredValueBoolean,
+    blurredValueNumber,
+    blurredValueColor,
+
+    tapToFocus,
+}: Props) {
+    const { setFocus } = useSunbeam()
+    const randomKey = useMemo(
+        () => Math.floor(Math.random() * 100000).toString(),
+        []
+    )
+    const focusKey = focusableKey || randomKey
+
+    const focusedValue = getFocusedValue(
+        focusPropType,
+        focusedValueString,
+        focusedValueBoolean,
+        focusedValueNumber,
+        focusedValueColor
+    )
+    const blurredValue = getBlurredValue(
+        focusPropType,
+        blurredValueString,
+        blurredValueBoolean,
+        blurredValueNumber,
+        blurredValueColor
+    )
+
+    return (
+        <SunbeamFocusable focusKey={focusKey}>
+            {({ focused, path }) => (
+                <FocusableWrapper
+                    width={width}
+                    height={height}
+                    focused={focused}
+                    onClick={() => {
+                        if (tapToFocus) setFocus(path as string[])
+                    }}
+                    onFocus={() => {
+                        if (onFocus) onFocus(path)
+                    }}
+                >
+                    {React.Children.map(children, child =>
+                        React.cloneElement(child, {
+                            [focusProp]: focused ? focusedValue : blurredValue,
+                        })
+                    )}
+                </FocusableWrapper>
+            )}
+        </SunbeamFocusable>
+    )
+}
+
 function FocusableWrapper({
     width,
     height,
     focused,
+    onClick,
     onFocus,
     children,
 }: {
     width: number
     height: number
     focused: boolean
+    onClick?: () => void
     onFocus: () => void
     children: React.ReactNode
 }) {
@@ -218,7 +223,11 @@ function FocusableWrapper({
         }
     }, [prevFocused, focused, onFocus])
 
-    return <div style={{ width, height }}>{children}</div>
+    return (
+        <div style={{ width, height }} onClick={onClick}>
+            {children}
+        </div>
+    )
 }
 
 function usePrevious<T>(value: T, initialValue?: T): T {
@@ -231,4 +240,48 @@ function usePrevious<T>(value: T, initialValue?: T): T {
 
     // Return previous value (happens before update in useEffect above)
     return ref.current
+}
+
+function getFocusedValue(
+    focusPropType: "string" | "boolean" | "number" | "color",
+    focusedValueString: string,
+    focusedValueBoolean: boolean,
+    focusedValueNumber: number,
+    focusedValueColor: string
+) {
+    switch (focusPropType) {
+        case "string":
+            return focusedValueString
+
+        case "boolean":
+            return focusedValueBoolean
+
+        case "number":
+            return focusedValueNumber
+
+        case "color":
+            return focusedValueColor
+    }
+}
+
+function getBlurredValue(
+    focusPropType: "string" | "boolean" | "number" | "color",
+    blurredValueString: string,
+    blurredValueBoolean: boolean,
+    blurredValueNumber: number,
+    blurredValueColor: string
+) {
+    switch (focusPropType) {
+        case "string":
+            return blurredValueString
+
+        case "boolean":
+            return blurredValueBoolean
+
+        case "number":
+            return blurredValueNumber
+
+        case "color":
+            return blurredValueColor
+    }
 }

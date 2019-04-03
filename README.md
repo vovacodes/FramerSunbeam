@@ -10,7 +10,7 @@ Provides two easy to use code components.
 -   Drag them onto your canvas
 -   Connect them to their content (`Frames` or any other code components)
 -   Specify the child property to update on focus for every `Focusable`
--   Run the preview
+-   Run the preview of the `Frame` containing `SunbeamContainer`
 -   Press arrow keys on your keyboard/gamepad/tv remote
 -   Enjoy spatial navigation magic happen
 
@@ -39,6 +39,11 @@ This is useful when creating sections of the UI, e.g. Side Menu where the `Focus
 
 Set to a randomly generated string by default.
 Identifier of a `Focusable`. Has to be unique among the `Focusable` siblings
+
+##### **Tap to focus** - `tapToFocus?: boolean`
+
+Set to false by default.
+Specifies if the `Focusable` should receive focus when tapped/clicked
 
 ##### **Focus prop** - `focusProp?: string`
 
