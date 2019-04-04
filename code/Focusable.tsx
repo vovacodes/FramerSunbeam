@@ -99,15 +99,13 @@ addPropertyControls(Focusable, {
     },
 })
 
-function CanvasPresentation({
-    width,
-    height,
-    children,
-}: {
+function CanvasPresentation(props: {
     width: number
     height: number
-    children: React.ReactNode
+    children: JSX.Element
 }) {
+    const { width, height, children } = props
+
     return React.Children.count(children) > 0 ? (
         children
     ) : (

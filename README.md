@@ -23,6 +23,19 @@ Creates a focus management context.
 Connect it to the `Frame` within which you want focus to be managed
 You can only have one `SunbeamContainer` per artboard
 
+#### Props
+
+##### **Up key** - `upKey?: string` - default `"ArrowUp"`
+
+##### **Down key** - `downKey?: string` - default `"ArrowDown"`
+
+##### **Left key** - `leftKey?: string` - default `"ArrowLeft"`
+
+##### **Right key** - `rightKey?: string` - default `"ArrowRight"`
+
+Allows to override the default spacial navigation keys.
+See the full list of available key codes [here](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values)
+
 ### `Focusable`
 
 Defines a component that can receive focus.
