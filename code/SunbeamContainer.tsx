@@ -36,6 +36,8 @@ export function SunbeamContainer({
         (event: Event) => {
             if (!(event instanceof KeyboardEvent)) return
 
+            if (renderTarget !== RenderTarget.preview) return
+
             switch (event.key) {
                 case rightKey:
                     event.preventDefault()
