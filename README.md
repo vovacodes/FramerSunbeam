@@ -3,6 +3,10 @@
 Spatial navigation and focus management for TVs and gaming consoles done simple.
 Uses [react-sunbeam 🌅](https://github.com/vovaguguiev/react-sunbeam) under the hood.
 
+## Contact
+
+You can report issues [here](https://github.com/vovaguguiev/FramerSunbeam/issues/new) and address questions about Framer Sunbeam to [@wzrdzl](https://twitter.com/wzrdzl) on Twitter
+
 ## Details
 
 Provides two easy to use code components.
