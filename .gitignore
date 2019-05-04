@@ -13,4 +13,5 @@ build
 dist
 node_modules
 .npmrc
+.yarnrc
 *.framerxproj
