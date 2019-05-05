@@ -69,7 +69,8 @@ Specifies if the `Focusable` should receive focus when tapped/clicked
 
 ##### **Focus prop** - `focusProp?: string`
 
-Name of the child prop that will be updated when `Focusable` receives/loses focus
+Name of the child prop that will be updated when `Focusable` receives/loses focus.
+E.g. if you are wrapping a Frame you can find the list of the props available to you [here](https://www.framer.com/api/frame/)
 
 ##### **Focus prop type** - `focusPropType?: "string" | "boolean" | "number" | "color"`
 
@@ -83,6 +84,12 @@ Value that is passed to the child's prop when the `Focusable` is focused
 
 Value that is passed to the child's prop when the `Focusable` is blurred
 
-##### `onFocus?: (focusablePath: string[]) => void`
+##### `onFocus?: ({ element: HTMLElement; focusablePath: ReadonlyArray<string> }) => void`
 
 Function that is called when the `Focusable` receives focus. Can be provided via [code overrides](https://framer.gitbook.io/framer/code/code-overrides). Receives `focusablePath` which is an array of `focusableKey`s of all `Focusable`s in the hierarchy from the root `Focusable` to the current one. Can be useful for saving the focus state or reacting to the focus updates, e.g. manual scrolling to the focused component
+
+## CHANGELOG
+
+### v1.14.0
+
+BREAKING CHANGE: `onFocus` callback now accepts an object of type `{ element: HTMLElement; focusablePath: string[] }` as an argument, before it was a string `focusablePath`

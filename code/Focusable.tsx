@@ -3,13 +3,18 @@ import { useMemo, useEffect, useRef } from "react"
 import { Focusable as SunbeamFocusable, useSunbeam } from "react-sunbeam"
 import { addPropertyControls, ControlType, RenderTarget } from "framer"
 
+interface FocusEvent {
+    element: HTMLElement
+    focusablePath: ReadonlyArray<string>
+}
+
 interface Props {
     width: number
     height: number
     children: JSX.Element
     tapToFocus?: boolean
     focusableKey?: string
-    onFocus?: (focusablePath: ReadonlyArray<string>) => void
+    onFocus?: (event: FocusEvent) => void
 
     focusProp: string
     focusPropType: "string" | "boolean" | "number" | "color"
@@ -50,6 +55,7 @@ addPropertyControls(Focusable, {
     focusPropType: {
         type: ControlType.Enum,
         title: "Focus prop type",
+        defaultValue: "string",
         options: ["string", "boolean", "number", "color"],
         optionTitles: ["String", "Boolean", "Number", "Color"],
     },
@@ -180,8 +186,8 @@ function PreviewPresentation({
                     onClick={() => {
                         if (tapToFocus) setFocus(path as string[])
                     }}
-                    onFocus={() => {
-                        if (onFocus) onFocus(path)
+                    onFocus={element => {
+                        if (onFocus) onFocus({ element, focusablePath: path })
                     }}
                 >
                     {React.Children.map(children, child =>
@@ -207,22 +213,23 @@ function FocusableWrapper({
     height: number
     focused: boolean
     onClick?: () => void
-    onFocus: () => void
+    onFocus: (element: HTMLElement) => void
     children: React.ReactNode
 }) {
+    const elementRef = useRef(null)
     const prevFocused = usePrevious(focused, focused)
 
     useEffect(() => {
         if (prevFocused === focused) return
 
         if (focused && onFocus) {
-            onFocus()
+            onFocus(elementRef.current)
             return
         }
     }, [prevFocused, focused, onFocus])
 
     return (
-        <div style={{ width, height }} onClick={onClick}>
+        <div ref={elementRef} style={{ width, height }} onClick={onClick}>
             {children}
         </div>
     )
