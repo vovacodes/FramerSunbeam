@@ -1,7 +1,8 @@
 import * as React from "react"
-import { useMemo, useEffect, useRef } from "react"
+import { useMemo, useEffect, useRef, useContext } from "react"
 import { Focusable as SunbeamFocusable, useSunbeam } from "react-sunbeam"
 import { addPropertyControls, ControlType, RenderTarget } from "framer"
+import { ScrollContext } from "./ScrollContext"
 
 interface FocusEvent {
     element: HTMLElement
@@ -159,6 +160,11 @@ function PreviewPresentation({
         () => Math.floor(Math.random() * 100000).toString(),
         []
     )
+    const scrollContextValue = useContext(ScrollContext)
+    const notifyScrollOnFocus = scrollContextValue
+        ? scrollContextValue.notifyScrollOnFocus
+        : null
+
     const focusKey = focusableKey || randomKey
 
     const focusedValue = getFocusedValue(
@@ -177,27 +183,38 @@ function PreviewPresentation({
     )
 
     return (
-        <SunbeamFocusable focusKey={focusKey}>
-            {({ focused, path }) => (
-                <FocusableWrapper
-                    width={width}
-                    height={height}
-                    focused={focused}
-                    onClick={() => {
-                        if (tapToFocus) setFocus(path as string[])
-                    }}
-                    onFocus={element => {
-                        if (onFocus) onFocus({ element, focusablePath: path })
-                    }}
-                >
-                    {React.Children.map(children, child =>
-                        React.cloneElement(child, {
-                            [focusProp]: focused ? focusedValue : blurredValue,
-                        })
-                    )}
-                </FocusableWrapper>
-            )}
-        </SunbeamFocusable>
+        /* Stop propagation of the scroll context
+         because Scroll only cares about the top level Focusable children */
+        <ScrollContext.Provider value={null}>
+            <SunbeamFocusable focusKey={focusKey}>
+                {({ focused, path }) => (
+                    <FocusableWrapper
+                        width={width}
+                        height={height}
+                        focused={focused}
+                        onClick={() => {
+                            if (tapToFocus) setFocus(path as string[])
+                        }}
+                        onFocus={element => {
+                            if (notifyScrollOnFocus)
+                                notifyScrollOnFocus({
+                                    boundingBox: element.getBoundingClientRect(),
+                                })
+                            if (onFocus)
+                                onFocus({ element, focusablePath: path })
+                        }}
+                    >
+                        {React.Children.map(children, child =>
+                            React.cloneElement(child, {
+                                [focusProp]: focused
+                                    ? focusedValue
+                                    : blurredValue,
+                            })
+                        )}
+                    </FocusableWrapper>
+                )}
+            </SunbeamFocusable>
+        </ScrollContext.Provider>
     )
 }
 

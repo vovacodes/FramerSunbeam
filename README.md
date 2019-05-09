@@ -3,22 +3,18 @@
 Spatial navigation and focus management for TVs and gaming consoles done simple.
 Uses [react-sunbeam 🌅](https://github.com/vovaguguiev/react-sunbeam) under the hood.
 
-## WARNING
-
-This package is using Framer API that is currently only available in [Framer X Beta](https://www.framer.com/beta/).
-Please either use Framer X Beta or wait until the next release of Framer X which should happen soon.
-
 ## Contact
 
 You can report issues [here](https://github.com/vovaguguiev/FramerSunbeam/issues/new) and address questions about Framer Sunbeam to [@wzrdzl](https://twitter.com/wzrdzl) on Twitter
 
 ## Details
 
-Provides two easy to use code components.
+Provides three easy to use code components.
 
 -   Drag them onto your canvas
 -   Connect them to their content (`Frames` or any other code components)
 -   Specify the child property to update on focus for every `Focusable`
+-   Drop your `Focusable`s into the Sunbeam `Scroll` component if you need scrolling behaviour
 -   Run the preview of the `Frame` containing `SunbeamContainer`
 -   Press arrow keys on your keyboard/gamepad/tv remote
 -   Enjoy spatial navigation magic happen
@@ -88,7 +84,29 @@ Value that is passed to the child's prop when the `Focusable` is blurred
 
 Function that is called when the `Focusable` receives focus. Can be provided via [code overrides](https://framer.gitbook.io/framer/code/code-overrides). Receives `focusablePath` which is an array of `focusableKey`s of all `Focusable`s in the hierarchy from the root `Focusable` to the current one. Can be useful for saving the focus state or reacting to the focus updates, e.g. manual scrolling to the focused component
 
+### `Scroll`
+
+Mimics the behaviour of the Framer built-in `Scroll` component but it is aware
+of the currently focused `Focusable` child and automatically scrolls it into view when needed.
+This component is useful for creating scrollable carousels and grids of `Focusable` components
+
+#### Props
+
+##### **Overflow** - `overflow: boolean`
+
+Specifies whether the content overflowing the `Scroll` viewport should be visible or not
+
+##### **Direction** - `direction: "vertical" | "horizontal" | "both"`
+
+The allowed direction of scrolling
+
 ## CHANGELOG
+
+### v1.15.0
+
+Proudly introducing the new component - `Scroll` 🎉.
+It mimics the behaviour of the Framer built-in `Scroll` component but it is aware of the currently focused `Focusable`
+and automatically scrolls it into view
 
 ### v1.14.0
 
