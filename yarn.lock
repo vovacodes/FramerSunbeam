@@ -1595,10 +1595,10 @@ fragment-cache@^0.2.1:
   dependencies:
     map-cache "^0.2.2"
 
-framer-cli@^1.3.0:
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/framer-cli/-/framer-cli-1.3.0.tgz#556de969a2ea1f1164d3990e0966bdd2257b6fe9"
-  integrity sha512-MkDg4j5n/WVJ+Az0WnFwo1MMpmmDu6qun3yXwVI+A3Gu7wRahxwaZiu1URLW6qPtibyam6lJBTGDulZ2gHjpEg==
+framer-cli@^1.3.1:
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/framer-cli/-/framer-cli-1.3.1.tgz#1cf7546c6dde60608dcfb3a167b4fe6783d31a40"
+  integrity sha512-id5P2z5uuFnzjyLGtRsoKMEc+WAINgWHS5LO4rhZ6bDmhUu+CAKgIqlpo1ZMgMOJ/QsUHATMhPt1UK9Rr++peg==
   dependencies:
     "@yarnpkg/lockfile" "^1.1.0"
     chalk "^2.3.2"
