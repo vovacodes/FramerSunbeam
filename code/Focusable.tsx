@@ -116,20 +116,9 @@ function CanvasPresentation(props: {
     return React.Children.count(children) > 0 ? (
         children
     ) : (
-        <div
-            style={{
-                height,
-                width,
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-                fontFamily: "monospace",
-                fontSize: 18,
-            }}
-        >
-            <div>Focusable</div>
-        </div>
+        <EmptyStatePlaceholder width={width} height={height}>
+            Connect to frame or component
+        </EmptyStatePlaceholder>
     )
 }
 
@@ -248,6 +237,57 @@ function FocusableWrapper({
     return (
         <div ref={elementRef} style={{ width, height }} onClick={onClick}>
             {children}
+        </div>
+    )
+}
+
+function EmptyStatePlaceholder({
+    width,
+    height,
+    children,
+}: {
+    width: number
+    height: number
+    children: string
+}) {
+    return (
+        <div
+            style={{
+                alignItems: "center",
+                backgroundColor: "rgba(136, 97, 238, 0.4)",
+                border: "1px dashed rgba(136, 97, 238, 0.6)",
+                color: "#8861EE",
+                display: "flex",
+                fontSize: 12,
+                flexWrap: "nowrap",
+                height,
+                justifyContent: "flex-end",
+                padding: "10px",
+                width,
+            }}
+        >
+            <div
+                style={{
+                    flexGrow: 1,
+                    flexShrink: 1,
+                    textAlign: "center",
+                    textOverflow: "clip",
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                }}
+            >
+                {children}
+            </div>
+            <div
+                style={{
+                    textAlign: "center",
+                    whiteSpace: "nowrap",
+                    flexGrow: 0,
+                    fontSize: "16px",
+                }}
+            >
+                ⟶
+            </div>
         </div>
     )
 }

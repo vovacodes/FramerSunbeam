@@ -74,23 +74,9 @@ export function SunbeamContainer({
             React.Children.count(children) > 0 ? (
                 children
             ) : (
-                <div
-                    style={{
-                        height,
-                        width,
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        fontFamily: "monospace",
-                        fontSize: 30,
-                    }}
-                >
-                    <div>SunbeamContainer</div>
-                    <div style={{ textAlign: "center" }}>
-                        Link this component to a Frame
-                    </div>
-                </div>
+                <EmptyStatePlaceholder width={width} height={height}>
+                    Connect to frame
+                </EmptyStatePlaceholder>
             )
 
         return <>{content}</>
@@ -139,4 +125,57 @@ function useGlobalEventListener<E extends Event>(
             window.removeEventListener(eventName, listener)
         }
     }, [eventName, listener])
+}
+
+// FIXME: this is copy-paste from Focusable.tsx because we can't share
+// components between files without making them appear in the Components UI in Framer
+function EmptyStatePlaceholder({
+    width,
+    height,
+    children,
+}: {
+    width: number
+    height: number
+    children: string
+}) {
+    return (
+        <div
+            style={{
+                alignItems: "center",
+                backgroundColor: "rgba(136, 97, 238, 0.4)",
+                border: "1px dashed rgba(136, 97, 238, 0.6)",
+                color: "#8861EE",
+                display: "flex",
+                fontSize: 12,
+                flexWrap: "nowrap",
+                height,
+                justifyContent: "flex-end",
+                padding: "10px",
+                width,
+            }}
+        >
+            <div
+                style={{
+                    flexGrow: 1,
+                    flexShrink: 1,
+                    textAlign: "center",
+                    textOverflow: "clip",
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                }}
+            >
+                {children}
+            </div>
+            <div
+                style={{
+                    textAlign: "center",
+                    whiteSpace: "nowrap",
+                    flexGrow: 0,
+                    fontSize: "16px",
+                }}
+            >
+                ⟶
+            </div>
+        </div>
+    )
 }
