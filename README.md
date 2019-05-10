@@ -19,6 +19,9 @@ Provides three easy to use code components.
 -   Press arrow keys on your keyboard/gamepad/tv remote
 -   Enjoy spatial navigation magic happen
 
+## Example Project
+[SunbeamExampleProject.zip](https://github.com/vovaguguiev/FramerSunbeam/files/3168065/SunbeamExampleProject.zip)
+
 ## Components
 
 ### `SunbeamContainer`
