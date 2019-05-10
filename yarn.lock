@@ -1595,10 +1595,10 @@ fragment-cache@^0.2.1:
   dependencies:
     map-cache "^0.2.2"
 
-framer-cli@^1.3.1:
-  version "1.3.1"
-  resolved "https://registry.yarnpkg.com/framer-cli/-/framer-cli-1.3.1.tgz#1cf7546c6dde60608dcfb3a167b4fe6783d31a40"
-  integrity sha512-id5P2z5uuFnzjyLGtRsoKMEc+WAINgWHS5LO4rhZ6bDmhUu+CAKgIqlpo1ZMgMOJ/QsUHATMhPt1UK9Rr++peg==
+framer-cli@^1.3.3:
+  version "1.3.3"
+  resolved "https://registry.yarnpkg.com/framer-cli/-/framer-cli-1.3.3.tgz#aa9e0e9436c03c9706ef07e6d7e2baf939ae13e1"
+  integrity sha512-hTRK4eePZv3qh6hNWLzV2NjMzvI01lCNFDmts66COp4C5LgMG8DH1M6wbK6gjW29HurSmn8fO3nyJ7hSZKMfHA==
   dependencies:
     "@yarnpkg/lockfile" "^1.1.0"
     chalk "^2.3.2"
@@ -1632,6 +1632,13 @@ framer-cli@^1.3.1:
     webpack-sources "^1.3.0"
     webpack-virtual-modules "^0.1.10"
     yarn "^1.12.3"
+
+"framer@^1.0 || ^0.10":
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/framer/-/framer-1.0.4.tgz#de4de895ff96e07ec3ae58b34d4e8865d8174963"
+  integrity sha512-4e17jGHzWIMXyBfsssw5M7G0x1Xm3ztnJRXFQz3AtClsPMBVAjhDl/LrGrLe2XTMkQaJLjMUZ9FgM972Yia4jw==
+  dependencies:
+    style-value-types "^3.1.4"
 
 fresh@0.5.2:
   version "0.5.2"
@@ -1850,6 +1857,11 @@ hash.js@^1.0.0, hash.js@^1.0.3:
   dependencies:
     inherits "^2.0.3"
     minimalistic-assert "^1.0.1"
+
+hey-listen@^1.0.8:
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/hey-listen/-/hey-listen-1.0.8.tgz#8e59561ff724908de1aa924ed6ecc84a56a9aa68"
+  integrity sha512-COpmrF2NOg4TBWUJ5UVyaCU2A88wEMkUPK4hNqyCkqHbxT92BbvfjoSozkAIIm6XhicGlJHhFdullInrdhwU8Q==
 
 hmac-drbg@^1.0.0:
   version "1.0.1"
@@ -3939,6 +3951,13 @@ style-loader@^0.21.0:
   dependencies:
     loader-utils "^1.1.0"
     schema-utils "^0.4.5"
+
+style-value-types@^3.1.4:
+  version "3.1.4"
+  resolved "https://registry.yarnpkg.com/style-value-types/-/style-value-types-3.1.4.tgz#8c0959d26405eb0cbad40097b496220d41c22169"
+  integrity sha512-jHxRZWQpx6imY+QIveHTZwGOJWJqX3Cmt6Yk1zCGeQjk4noEsX+lfvFJUmRPpZL3VTrfGrHtjVWTcvcHx/OFhQ==
+  dependencies:
+    hey-listen "^1.0.8"
 
 supports-color@^5.3.0:
   version "5.5.0"
