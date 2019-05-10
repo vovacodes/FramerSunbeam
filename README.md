@@ -20,9 +20,10 @@ Provides three easy to use code components.
 -   Enjoy spatial navigation magic happen
 
 ## Example Project
+
 You can download the example Framer project that demonstrates how to setup Framer Sunbeam below. Unzip the archive and open the file in Framer X.
 
-<img width="1276" alt="Screenshot 2019-05-10 at 22 50 12" src="https://user-images.githubusercontent.com/1524432/57556043-31c77080-7376-11e9-8afd-5c403954abbb.png">
+![Example project screenshot](https://user-images.githubusercontent.com/1524432/57556043-31c77080-7376-11e9-8afd-5c403954abbb.png)
 
 [SunbeamExampleProject.zip](https://github.com/vovaguguiev/FramerSunbeam/files/3168065/SunbeamExampleProject.zip)
 
