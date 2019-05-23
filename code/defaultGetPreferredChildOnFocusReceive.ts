@@ -1,0 +1,3 @@
+import { unstable_defaultGetPreferredChildOnFocusReceive } from "react-sunbeam"
+
+export const defaultGetPreferredChildOnFocusReceive = unstable_defaultGetPreferredChildOnFocusReceive

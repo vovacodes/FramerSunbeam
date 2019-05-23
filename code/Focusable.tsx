@@ -1,6 +1,11 @@
 import * as React from "react"
 import { useMemo, useEffect, useRef, useContext } from "react"
-import { Focusable as SunbeamFocusable, useSunbeam } from "react-sunbeam"
+import {
+    Direction,
+    Focusable as SunbeamFocusable,
+    FocusableTreeNode,
+    useSunbeam,
+} from "react-sunbeam"
 import { addPropertyControls, ControlType, RenderTarget } from "framer"
 import { ScrollContext } from "./ScrollContext"
 
@@ -16,6 +21,11 @@ interface Props {
     tapToFocus?: boolean
     focusableKey?: string
     onFocus?: (event: FocusEvent) => void
+    unstable_getPreferredChildOnFocusReceive?: (args: {
+        focusableChildren: Map<string, FocusableTreeNode>
+        focusOrigin?: FocusableTreeNode
+        direction?: Direction
+    }) => FocusableTreeNode | undefined
 
     focusProp: string
     focusPropType: "string" | "boolean" | "number" | "color"
@@ -128,6 +138,7 @@ function PreviewPresentation({
     children,
     focusableKey,
     onFocus,
+    unstable_getPreferredChildOnFocusReceive,
 
     focusProp,
     focusPropType,
@@ -175,7 +186,12 @@ function PreviewPresentation({
         /* Stop propagation of the scroll context
          because Scroll only cares about the top level Focusable children */
         <ScrollContext.Provider value={null}>
-            <SunbeamFocusable focusKey={focusKey}>
+            <SunbeamFocusable
+                focusKey={focusKey}
+                unstable_getPreferredChildOnFocusReceive={
+                    unstable_getPreferredChildOnFocusReceive
+                }
+            >
                 {({ focused, path }) => (
                     <FocusableWrapper
                         width={width}

@@ -1,6 +1,11 @@
 import * as React from "react"
 import { useMemo, useCallback, useEffect } from "react"
-import { FocusManager, SunbeamProvider } from "react-sunbeam"
+import {
+    FocusManager,
+    SunbeamProvider,
+    FocusableTreeNode,
+    Direction,
+} from "react-sunbeam"
 import { addPropertyControls, ControlType, RenderTarget } from "framer"
 
 interface Props {
@@ -11,6 +16,11 @@ interface Props {
     downKey?: string
     leftKey?: string
     rightKey?: string
+    unstable_getPreferredChildOnFocusReceive?: (args: {
+        focusableChildren: Map<string, FocusableTreeNode>
+        focusOrigin?: FocusableTreeNode
+        direction?: Direction
+    }) => FocusableTreeNode | undefined
 }
 
 export function SunbeamContainer({
@@ -21,6 +31,7 @@ export function SunbeamContainer({
     downKey = "ArrowDown",
     leftKey = "ArrowLeft",
     rightKey = "ArrowRight",
+    unstable_getPreferredChildOnFocusReceive,
 }: Props) {
     const focusManager = useMemo(
         () =>
@@ -83,7 +94,12 @@ export function SunbeamContainer({
     }
 
     return (
-        <SunbeamProvider focusManager={focusManager}>
+        <SunbeamProvider
+            focusManager={focusManager}
+            unstable_getPreferredChildOnFocusReceive={
+                unstable_getPreferredChildOnFocusReceive
+            }
+        >
             {children}
         </SunbeamProvider>
     )
