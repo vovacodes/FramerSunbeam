@@ -16,6 +16,8 @@ interface Props {
     downKey?: string
     leftKey?: string
     rightKey?: string
+    onKeyPress?: (event: KeyboardEvent) => void
+    onFocusUpdate?: (event: { focusPath: ReadonlyArray<string> }) => void
     unstable_getPreferredChildOnFocusReceive?: (args: {
         focusableChildren: Map<string, FocusableTreeNode>
         focusOrigin?: FocusableTreeNode
@@ -31,6 +33,8 @@ export function SunbeamContainer({
     downKey = "ArrowDown",
     leftKey = "ArrowLeft",
     rightKey = "ArrowRight",
+    onKeyPress,
+    onFocusUpdate,
     unstable_getPreferredChildOnFocusReceive,
 }: Props) {
     const focusManager = useMemo(
@@ -43,11 +47,13 @@ export function SunbeamContainer({
 
     const renderTarget = RenderTarget.current()
 
-    const onKeyDown = useCallback(
+    const handleKeyDown = useCallback(
         (event: Event) => {
             if (!(event instanceof KeyboardEvent)) return
 
             if (renderTarget !== RenderTarget.preview) return
+
+            if (onKeyPress) onKeyPress(event)
 
             switch (event.key) {
                 case rightKey:
@@ -75,10 +81,10 @@ export function SunbeamContainer({
                     return
             }
         },
-        [upKey, downKey, leftKey, rightKey]
+        [upKey, downKey, leftKey, rightKey, onKeyPress]
     )
 
-    useGlobalEventListener("keydown", onKeyDown)
+    useGlobalEventListener("keydown", handleKeyDown)
 
     if (renderTarget === RenderTarget.canvas) {
         const content =
@@ -96,6 +102,7 @@ export function SunbeamContainer({
     return (
         <SunbeamProvider
             focusManager={focusManager}
+            onFocusUpdate={onFocusUpdate}
             unstable_getPreferredChildOnFocusReceive={
                 unstable_getPreferredChildOnFocusReceive
             }

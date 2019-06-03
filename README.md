@@ -49,6 +49,15 @@ You can only have one `SunbeamContainer` per artboard
 Allows to override the default spacial navigation keys.
 See the full list of available key codes [here](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values)
 
+##### `onKeyPress?: (event: KeyboardEvent) => void`
+
+Allows to invoke some function when a keyboard key is pressed. Can be provided via [code overrides](https://framer.gitbook.io/framer/code/code-overrides).
+
+##### `onFocusUpdate?: (event: { focusPath: ReadonlyArray<string> }) => void`
+
+Allows to invoke a function when the focus is updated. An event object containing the new `focusPath` is passed to this callback.
+Can be provided via [code overrides](https://framer.gitbook.io/framer/code/code-overrides).
+
 ### `Focusable`
 
 Defines a component that can receive focus.
@@ -109,6 +118,10 @@ Specifies whether the content overflowing the `Scroll` viewport should be visibl
 The allowed direction of scrolling
 
 ## CHANGELOG
+
+### v1.19.0
+
+Add `onKeyPress` and `onFocusUpdate` props to `SunbeamContainer`
 
 ### v1.15.0
 
