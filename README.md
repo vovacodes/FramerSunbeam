@@ -117,7 +117,53 @@ Specifies whether the content overflowing the `Scroll` viewport should be visibl
 
 The allowed direction of scrolling
 
+## Using library in your code
+
+Framer Sunbeam re-exports some of the [react-sunbeam 🌅](https://github.com/vovaguguiev/react-sunbeam) primitives
+so you can use them directly in you code to create your own custom focusable components without
+connecting a Focusable to another component on canvas.
+
+### Example
+
+You can implement your own focusable Button like this:
+
+```tsx
+import * as React from "react"
+import { addPropertyControls, ControlType } from "framer"
+import { useFocusable } from "@framer/vladimirg.framersunbeam/code"
+
+addPropertyControls(Button, {
+    focusKey: {
+        type: ControlType.String,
+        defaultValue: "CHANGE THIS TO A UNIQUE VALUE",
+    },
+})
+
+export function Button({ focusKey, width, height }) {
+    const ref = React.useRef(null)
+    const { focused } = useFocusable(focusKey, ref)
+
+    return (
+        <button
+            ref={ref}
+            style={{
+                width,
+                height,
+                border: focused ? "2px solid tomato" : "none",
+            }}
+        >
+            Go
+        </button>
+    )
+}
+```
+
 ## CHANGELOG
+
+### v1.20.0
+
+Export `Focusable`, `useSunbeam`, `useFocusable` and `defaultGetPreferredChildOnFocusReceive` so those can be used
+directly in your custom code components.
 
 ### v1.19.0
 
