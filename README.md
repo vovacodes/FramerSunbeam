@@ -120,8 +120,8 @@ The allowed direction of scrolling
 ## Using library in your code
 
 Framer Sunbeam re-exports some of the [react-sunbeam 🌅](https://github.com/vovaguguiev/react-sunbeam) primitives
-so you can use them directly in you code to create your own custom focusable components without
-connecting a Focusable to another component on canvas.
+and other helper functions so you can use them directly in you code to create your own custom focusable
+components without connecting a Focusable to another component on canvas.
 
 ### Example
 
@@ -130,7 +130,11 @@ You can implement your own focusable Button like this:
 ```tsx
 import * as React from "react"
 import { addPropertyControls, ControlType } from "framer"
-import { useFocusable } from "@framer/vladimirg.framersunbeam/code"
+import {
+    useFocusable,
+    useOnFocus,
+    ScrollContext,
+} from "@framer/vladimirg.framersunbeam/code"
 
 addPropertyControls(Button, {
     focusKey: {
@@ -142,6 +146,18 @@ addPropertyControls(Button, {
 export function Button({ focusKey, width, height }) {
     const ref = React.useRef(null)
     const { focused } = useFocusable(focusKey, ref)
+
+    // implement the logic necessary for Scroll component to work with this component
+    const scrollContextValue = React.useContext(ScrollContext)
+    const notifyScrollOnFocus = scrollContextValue
+        ? scrollContextValue.notifyScrollOnFocus
+        : null
+    useOnFocus(focused, () => {
+        if (notifyScrollOnFocus)
+            notifyScrollOnFocus({
+                boundingBox: ref.current.getBoundingClientRect(),
+            })
+    })
 
     return (
         <button
@@ -159,6 +175,10 @@ export function Button({ focusKey, width, height }) {
 ```
 
 ## CHANGELOG
+
+### v1.21.0
+
+Export `ScrollContext` and `useOnFocus`
 
 ### v1.20.0
 

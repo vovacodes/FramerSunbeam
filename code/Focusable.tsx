@@ -1,5 +1,5 @@
 import * as React from "react"
-import { useMemo, useEffect, useRef, useContext } from "react"
+import { useMemo, useRef, useContext } from "react"
 import {
     Direction,
     Focusable as SunbeamFocusable,
@@ -8,6 +8,7 @@ import {
 } from "react-sunbeam"
 import { addPropertyControls, ControlType, RenderTarget } from "framer"
 import { ScrollContext } from "./ScrollContext"
+import { useOnFocus } from "./useOnFocus"
 
 interface FocusEvent {
     element: HTMLElement
@@ -239,16 +240,10 @@ function FocusableWrapper({
     children: React.ReactNode
 }) {
     const elementRef = useRef(null)
-    const prevFocused = usePrevious(focused, focused)
 
-    useEffect(() => {
-        if (prevFocused === focused) return
-
-        if (focused && onFocus) {
-            onFocus(elementRef.current)
-            return
-        }
-    }, [prevFocused, focused, onFocus])
+    useOnFocus(focused, () => {
+        onFocus(elementRef.current)
+    })
 
     return (
         <div ref={elementRef} style={{ width, height }} onClick={onClick}>
@@ -306,18 +301,6 @@ function EmptyStatePlaceholder({
             </div>
         </div>
     )
-}
-
-function usePrevious<T>(value: T, initialValue?: T): T {
-    const ref = useRef<T>(initialValue)
-
-    // Store current value in ref
-    useEffect(() => {
-        ref.current = value
-    }, [value])
-
-    // Return previous value (happens before update in useEffect above)
-    return ref.current
 }
 
 function getFocusedValue(
