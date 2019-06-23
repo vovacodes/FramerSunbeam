@@ -130,11 +130,7 @@ You can implement your own focusable Button like this:
 ```tsx
 import * as React from "react"
 import { addPropertyControls, ControlType } from "framer"
-import {
-    useFocusable,
-    useOnFocus,
-    ScrollContext,
-} from "@framer/vladimirg.framersunbeam/code"
+import { useFocusable, useOnFocus } from "@framer/vladimirg.framersunbeam/code"
 
 addPropertyControls(Button, {
     focusKey: {
@@ -148,7 +144,7 @@ export function Button({ focusKey, width, height }) {
     const { focused } = useFocusable(focusKey, ref)
 
     // implement the logic necessary for Scroll component to work with this component
-    const scrollContextValue = React.useContext(ScrollContext)
+    const scrollContextValue = React.useContext(window.SunbeamScrollContext)
     const notifyScrollOnFocus = scrollContextValue
         ? scrollContextValue.notifyScrollOnFocus
         : null
@@ -175,6 +171,10 @@ export function Button({ focusKey, width, height }) {
 ```
 
 ## CHANGELOG
+
+### v1.22.0
+
+Remove `ScrollContext` from module export but export it as a global variable `SunbeamScrollContext`
 
 ### v1.21.0
 
