@@ -29,7 +29,7 @@
     },
     "author": "Vladimir Guguiev",
     "dependencies": {
-        "react-sunbeam": "^0.6.0"
+        "react-sunbeam": "^0.6.1"
     },
     "name": "@framer/vladimirg.framersunbeam",
     "version": "1.22.0"
