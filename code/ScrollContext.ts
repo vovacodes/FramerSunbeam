@@ -1,8 +1,10 @@
 import { createContext } from "react"
 
-export const ScrollContext = createContext<{
+export interface ScrollContextValue {
     notifyScrollOnFocus: ({ boundingBox: ClientRect }) => void
-} | null>(null)
+}
+
+export const ScrollContext = createContext<ScrollContextValue | null>(null)
 
 // Because of the limitation of Framer X we can't
 // export singletons as a module from the package
