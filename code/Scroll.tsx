@@ -185,20 +185,31 @@ function DefaultScroll({
         }) => {
             const track = trackRef.current
             const viewport = viewportRef.current
+
             const {
                 width: viewportWidth,
                 height: viewportHeight,
                 left: viewportLeft,
                 top: viewportTop,
             } = viewport.getBoundingClientRect()
+
+            const {
+                left: trackLeft,
+                top: trackTop,
+            } = track.getBoundingClientRect()
+
             const scaleX = viewportWidth / viewport.offsetWidth
             const scaleY = viewportHeight / viewport.offsetHeight
+            const currentScrollX = viewportLeft - trackLeft
+            const currentScrollY = viewportTop - trackTop
+
             const {
                 width: elementWidth,
                 height: elementHeight,
                 left: elementLeft,
                 top: elementTop,
             } = focusedElementBoundingBox
+
             const elementOffsetLeft = elementLeft - viewportLeft
             const elementOffsetTop = elementTop - viewportTop
             const elementRightEdge = elementOffsetLeft + elementWidth
@@ -212,7 +223,9 @@ function DefaultScroll({
                 } else if (elementRightEdge > viewportWidth) {
                     deltaScrollX = (elementRightEdge - viewportWidth) / scaleX
                 }
-                newScrollX = ensureScrollXWithinBounds(scrollX + deltaScrollX)
+                newScrollX = ensureScrollXWithinBounds(
+                    currentScrollX + deltaScrollX
+                )
                 function ensureScrollXWithinBounds(value: number): number {
                     const minScrollX = 0
                     const maxScrollX = track.scrollWidth - viewport.offsetWidth
@@ -230,7 +243,9 @@ function DefaultScroll({
                 } else if (elementBottomEdge > viewportHeight) {
                     deltaScrollY = (elementBottomEdge - viewportHeight) / scaleY
                 }
-                newScrollY = ensureScrollYWithinBounds(scrollY + deltaScrollY)
+                newScrollY = ensureScrollYWithinBounds(
+                    currentScrollY + deltaScrollY
+                )
                 function ensureScrollYWithinBounds(value: number): number {
                     const minScrollY = 0
                     const maxScrollY =
@@ -241,10 +256,10 @@ function DefaultScroll({
                 }
             }
 
-            if (newScrollX !== scrollX) setScrollX(newScrollX)
-            if (newScrollY !== scrollY) setScrollY(newScrollY)
+            setScrollX(newScrollX)
+            setScrollY(newScrollY)
         },
-        [scrollX, scrollY]
+        []
     )
     const contextValue = React.useMemo(
         () => ({ notifyScrollOnFocus: onChildFocus }),
