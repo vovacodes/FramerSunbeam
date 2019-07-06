@@ -6,10 +6,34 @@ import {
     FocusableTreeNode,
     Direction,
 } from "react-sunbeam"
-import { addPropertyControls, ControlType, RenderTarget } from "framer"
+import { addPropertyControls, ControlType, Frame, RenderTarget } from "framer"
+
+addPropertyControls(SunbeamContainer, {
+    children: { type: ControlType.ComponentInstance, title: "Content" },
+    upKey: {
+        type: ControlType.String,
+        title: "Up key",
+        defaultValue: "ArrowUp",
+    },
+    downKey: {
+        type: ControlType.String,
+        title: "Down key",
+        defaultValue: "ArrowDown",
+    },
+    leftKey: {
+        type: ControlType.String,
+        title: "Left key",
+        defaultValue: "ArrowLeft",
+    },
+    rightKey: {
+        type: ControlType.String,
+        title: "Right key",
+        defaultValue: "ArrowRight",
+    },
+})
 
 interface Props {
-    children: JSX.Element
+    children: React.ReactNode
     height: number
     width: number
     upKey?: string
@@ -25,9 +49,40 @@ interface Props {
     }) => FocusableTreeNode | undefined
 }
 
-export function SunbeamContainer({
-    height,
-    width,
+export function SunbeamContainer(props: Props) {
+    if (RenderTarget.current() === RenderTarget.thumbnail) {
+        return (
+            <Frame
+                size="100%"
+                background="#6C5B7B"
+                color="white"
+                style={{ fontSize: "100px" }}
+            >
+                C
+            </Frame>
+        )
+    }
+
+    if (RenderTarget.current() === RenderTarget.canvas) {
+        const content =
+            React.Children.count(props.children) > 0 ? (
+                props.children
+            ) : (
+                <EmptyStatePlaceholder
+                    width={props.width}
+                    height={props.height}
+                >
+                    Connect to frame
+                </EmptyStatePlaceholder>
+            )
+
+        return <>{content}</>
+    }
+
+    return <PreviewPresentation {...props} />
+}
+
+function PreviewPresentation({
     children,
     upKey = "ArrowUp",
     downKey = "ArrowDown",
@@ -45,13 +100,9 @@ export function SunbeamContainer({
         []
     )
 
-    const renderTarget = RenderTarget.current()
-
     const handleKeyDown = useCallback(
         (event: Event) => {
             if (!(event instanceof KeyboardEvent)) return
-
-            if (renderTarget !== RenderTarget.preview) return
 
             if (onKeyPress) onKeyPress(event)
 
@@ -86,19 +137,6 @@ export function SunbeamContainer({
 
     useGlobalEventListener("keydown", handleKeyDown)
 
-    if (renderTarget === RenderTarget.canvas) {
-        const content =
-            React.Children.count(children) > 0 ? (
-                children
-            ) : (
-                <EmptyStatePlaceholder width={width} height={height}>
-                    Connect to frame
-                </EmptyStatePlaceholder>
-            )
-
-        return <>{content}</>
-    }
-
     return (
         <SunbeamProvider
             focusManager={focusManager}
@@ -111,30 +149,6 @@ export function SunbeamContainer({
         </SunbeamProvider>
     )
 }
-
-addPropertyControls(SunbeamContainer, {
-    children: { type: ControlType.ComponentInstance, title: "child" },
-    upKey: {
-        type: ControlType.String,
-        title: "Up key",
-        defaultValue: "ArrowUp",
-    },
-    downKey: {
-        type: ControlType.String,
-        title: "Down key",
-        defaultValue: "ArrowDown",
-    },
-    leftKey: {
-        type: ControlType.String,
-        title: "Left key",
-        defaultValue: "ArrowLeft",
-    },
-    rightKey: {
-        type: ControlType.String,
-        title: "Right key",
-        defaultValue: "ArrowRight",
-    },
-})
 
 type EventListener = (evt: Event) => void
 function useGlobalEventListener<E extends Event>(

@@ -6,7 +6,7 @@ import {
     FocusableTreeNode,
     useSunbeam,
 } from "react-sunbeam"
-import { addPropertyControls, ControlType, RenderTarget } from "framer"
+import { addPropertyControls, ControlType, Frame, RenderTarget } from "framer"
 import { ScrollContext } from "./ScrollContext"
 import { useOnFocus } from "./useOnFocus"
 
@@ -43,13 +43,28 @@ interface Props {
 }
 
 export function Focusable(props: Props) {
-    return RenderTarget.current() === RenderTarget.canvas ? (
-        <CanvasPresentation width={props.width} height={props.height}>
-            {props.children}
-        </CanvasPresentation>
-    ) : (
-        <PreviewPresentation {...props} />
-    )
+    if (RenderTarget.current() === RenderTarget.thumbnail) {
+        return (
+            <Frame
+                size="100%"
+                background="#F67280"
+                color="white"
+                style={{ fontSize: "100px" }}
+            >
+                F
+            </Frame>
+        )
+    }
+
+    if (RenderTarget.current() === RenderTarget.canvas) {
+        return (
+            <CanvasPresentation width={props.width} height={props.height}>
+                {props.children}
+            </CanvasPresentation>
+        )
+    }
+
+    return <PreviewPresentation {...props} />
 }
 
 addPropertyControls(Focusable, {

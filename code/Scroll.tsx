@@ -1,6 +1,119 @@
 import * as React from "react"
-import { addPropertyControls, ControlType } from "framer"
+import { Frame, addPropertyControls, ControlType, RenderTarget } from "framer"
 import { ScrollContext } from "./ScrollContext"
+
+addPropertyControls(Scroll, {
+    children: {
+        type: ControlType.ComponentInstance,
+        title: "Content",
+    },
+    overflow: {
+        type: ControlType.Boolean,
+        title: "Overflow",
+        defaultValue: true,
+        enabledTitle: "Show",
+        disabledTitle: "Hide",
+    },
+    direction: {
+        type: ControlType.SegmentedEnum,
+        title: "Direction",
+        options: ["vertical", "horizontal", "both"],
+        optionTitles: [
+            <span style={{ fontSize: "30px" }}>↕</span>,
+            "↔",
+            <span
+                // @ts-ignore
+                dangerouslySetInnerHtml={{ __html: "&#x6F&#x332;" }}
+                style={{ fontSize: "30px" }}
+            />,
+        ] as any,
+        defaultValue: "both",
+    },
+    background: {
+        title: "Fill",
+        type: ControlType.Color,
+        defaultValue: "none",
+    },
+
+    // Transition props
+    transitionType: {
+        title: "Transition",
+        type: ControlType.SegmentedEnum,
+        defaultValue: "spring",
+        options: ["spring", "tween"],
+        optionTitles: ["Spring", "Tween"],
+    },
+    // spring
+    damping: {
+        title: "Damping",
+        type: ControlType.Number,
+        defaultValue: 40,
+        min: 0,
+        step: 10,
+        displayStepper: true,
+        hidden(props) {
+            return props.transitionType !== "spring"
+        },
+    },
+    stiffness: {
+        title: "Stiffness",
+        type: ControlType.Number,
+        defaultValue: 300,
+        min: 0,
+        step: 10,
+        displayStepper: true,
+        hidden(props) {
+            return props.transitionType !== "spring"
+        },
+    },
+    // tween
+    duration: {
+        title: "Duration",
+        type: ControlType.Number,
+        defaultValue: 0.2,
+        min: 0,
+        step: 0.1,
+        unit: "s",
+        displayStepper: true,
+        hidden(props) {
+            return props.transitionType !== "tween"
+        },
+    },
+    easing: {
+        title: "Easing",
+        type: ControlType.Enum,
+        defaultValue: "easeOut",
+        options: [
+            "linear",
+            "easeIn",
+            "easeOut",
+            "easeInOut",
+            "circIn",
+            "circOut",
+            "circInOut",
+            "backIn",
+            "backOut",
+            "backInOut",
+            "anticipate",
+        ],
+        optionTitles: [
+            "linear",
+            "easeIn",
+            "easeOut",
+            "easeInOut",
+            "circIn",
+            "circOut",
+            "circInOut",
+            "backIn",
+            "backOut",
+            "backInOut",
+            "anticipate",
+        ],
+        hidden(props) {
+            return props.transitionType !== "tween"
+        },
+    },
+})
 
 interface Props {
     width: number
@@ -8,14 +121,56 @@ interface Props {
     children: React.ReactElement
     overflow: boolean
     direction: "vertical" | "horizontal" | "both"
+    background: string
+    transitionType: "spring" | "tween"
+    // spring
+    damping: number
+    stiffness: number
+    // tween
+    duration: number
+    easing:
+        | "linear"
+        | "easeIn"
+        | "easeOut"
+        | "easeInOut"
+        | "circIn"
+        | "circOut"
+        | "circInOut"
+        | "backIn"
+        | "backOut"
+        | "backInOut"
+        | "anticipate"
 }
 
-export function Scroll({
+export function Scroll(props: Props) {
+    if (RenderTarget.current() === RenderTarget.thumbnail) {
+        return (
+            <Frame
+                size="100%"
+                background="C06C84"
+                color="white"
+                style={{ fontSize: "100px" }}
+            >
+                S
+            </Frame>
+        )
+    }
+
+    return <DefaultScroll {...props} />
+}
+
+function DefaultScroll({
     width,
     height,
     children,
     overflow,
     direction,
+    background,
+    transitionType,
+    damping,
+    stiffness,
+    duration,
+    easing,
 }: Props) {
     const viewportRef = React.useRef(null)
     const trackRef = React.useRef(null)
@@ -99,12 +254,13 @@ export function Scroll({
     const child = children && React.Children.toArray(children)[0]
 
     if (!child) {
-        return (
-            <EmptyStatePlaceholder width={width} height={height}>
-                Connect to scrollable content
-            </EmptyStatePlaceholder>
-        )
+        return <EmptyStatePlaceholder width={width} height={height} />
     }
+
+    const transition =
+        transitionType === "spring"
+            ? { type: "spring", damping, stiffness }
+            : { type: "tween", duration, ease: easing }
 
     return (
         <ScrollContext.Provider value={contextValue}>
@@ -116,58 +272,30 @@ export function Scroll({
                     overflow: overflow ? "visible" : "hidden",
                 }}
             >
-                <div
+                <Frame
                     ref={trackRef}
-                    style={{
-                        position: "relative",
-                        width: child && child.props.width,
-                        height: child && child.props.height,
-                        transform: `translate(${-scrollX}px, ${-scrollY}px)`,
-                        transition: "transform 150ms ease-out",
-                        willChange: "transform",
-                    }}
+                    position="relative"
+                    background={background}
+                    width={child && child.props.width}
+                    height={child && child.props.height}
+                    animate={{ x: -scrollX, y: -scrollY }}
+                    transition={transition}
                 >
                     {child}
-                </div>
+                </Frame>
             </div>
         </ScrollContext.Provider>
     )
 }
-
-addPropertyControls(Scroll, {
-    overflow: {
-        type: ControlType.Boolean,
-        title: "Overflow",
-        defaultValue: true,
-        enabledTitle: "Show",
-        disabledTitle: "Hide",
-    },
-    direction: {
-        type: ControlType.SegmentedEnum,
-        title: "Direction",
-        options: ["vertical", "horizontal", "both"],
-        optionTitles: [
-            <span style={{ fontSize: "30px" }}>↕</span>,
-            "↔",
-            <span
-                dangerouslySetInnerHtml={{ __html: "&#x6F&#x332;" }}
-                style={{ fontSize: "30px" }}
-            />,
-        ] as any,
-        defaultValue: "both",
-    },
-})
 
 // FIXME: this is copy-paste from Focusable.tsx because we can't share
 // components between files without making them appear in the Components UI in Framer
 function EmptyStatePlaceholder({
     width,
     height,
-    children,
 }: {
     width: number
     height: number
-    children: string
 }) {
     return (
         <div
@@ -195,7 +323,7 @@ function EmptyStatePlaceholder({
                     overflow: "hidden",
                 }}
             >
-                {children}
+                Connect to scrollable content
             </div>
             <div
                 style={{

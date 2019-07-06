@@ -117,6 +117,26 @@ Specifies whether the content overflowing the `Scroll` viewport should be visibl
 
 The allowed direction of scrolling
 
+##### **Transition** - `transitionType: "spring" | "tween"`
+
+Type of the transition to use for scrolling: [Spring](https://www.framer.com/api/animation/#spring) or [Tween](https://www.framer.com/api/animation/#tween)
+
+##### **Damping** - `damping: number`
+
+Damping parameter of the Spring transition. See more [here](https://www.framer.com/api/animation/#spring.damping)
+
+##### **Stiffness** - `stiffness: number`
+
+Stiffness parameter of the Spring transition. See more [here](https://www.framer.com/api/animation/#spring.stiffness)
+
+##### **Duration** - `duration: number`
+
+Duration parameter of the Tween transition. See more [here](https://www.framer.com/api/animation/#tween.duration)
+
+##### **Easing** - `easing: "linear" | "easeIn" | "easeOut" | "easeInOut" | "circIn" | "circOut" | "circInOut" | "backIn" | "backOut" | "backInOut" | "anticipate"`
+
+Easing parameter of the Tween transition. See more [here](https://www.framer.com/api/animation/#tween.ease)
+
 ## Using library in your code
 
 Framer Sunbeam re-exports some of the [react-sunbeam 🌅](https://github.com/vovaguguiev/react-sunbeam) primitives
@@ -159,6 +179,10 @@ export function Button({ focusKey, width, height }) {
 ```
 
 ## CHANGELOG
+
+### v1.25.0
+
+Expose property controls for `Scroll`'s transition
 
 ### v1.24.0
 
