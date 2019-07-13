@@ -1651,6 +1651,11 @@ framer-cli@^1.3.3:
     webpack-virtual-modules "^0.1.10"
     yarn "^1.16.0"
 
+"framer@^1.0 || ^0.10":
+  version "1.0.14"
+  resolved "https://registry.yarnpkg.com/framer/-/framer-1.0.14.tgz#c28e018e7777e43bcbe7ac750cb0a57c18a01949"
+  integrity sha512-arMs/yQUPBZqZwWz5+3Q2OdWZCMDPFtcaRKmh2MP2ettw6LrJ4ct8erwzUt0TESlPvuk4pVsyM2qCx99JCRyyA==
+
 fresh@0.5.2:
   version "0.5.2"
   resolved "https://registry.yarnpkg.com/fresh/-/fresh-0.5.2.tgz#3d8cadd90d976569fa835ab1f8e4b23a105605a7"
