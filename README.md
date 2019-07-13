@@ -1,11 +1,11 @@
 # Framer Sunbeam
 
+[![GitHub issues](https://img.shields.io/github/issues/vovaguguiev/FramerSunbeam.svg?color=%23&label=Submit%20issue&logo=github&style=flat-square)](https://github.com/vovaguguiev/FramerSunbeam/issues)
+[![GitHub contributors](https://img.shields.io/github/contributors/vovaguguiev/FramerSunbeam.svg?color=%23FF88AA&label=Contribute&logo=github&style=flat-square)](https://github.com/vovaguguiev/FramerSunbeam)
+[![Twitter Follow](https://img.shields.io/twitter/follow/wzrdzl.svg?color=%231ca1f2&label=Contact%20author&logo=twitter&style=flat-square)](https://twitter.com/wzrdzl)
+
 Spatial navigation and focus management for TVs and gaming consoles done simple.
 Uses [react-sunbeam 🌅](https://github.com/vovaguguiev/react-sunbeam) under the hood.
-
-## Contact
-
-You can report issues [here](https://github.com/vovaguguiev/FramerSunbeam/issues/new) and address questions about Framer Sunbeam to [@wzrdzl](https://twitter.com/wzrdzl) on Twitter
 
 ## Details
 
