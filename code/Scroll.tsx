@@ -284,13 +284,14 @@ function DefaultScroll({
                 style={{
                     width,
                     height,
+                    background,
                     overflow: overflow ? "visible" : "hidden",
                 }}
             >
                 <Frame
                     ref={trackRef}
                     position="relative"
-                    background={background}
+                    background="none"
                     width={child && child.props.width}
                     height={child && child.props.height}
                     animate={{ x: -scrollX, y: -scrollY }}

@@ -180,6 +180,10 @@ export function Button({ focusKey, width, height }) {
 
 ## CHANGELOG
 
+### v1.29.0
+
+Fix `Scroll` fill
+
 ### v1.25.0
 
 Expose property controls for `Scroll`'s transition
