@@ -10,63 +10,6 @@ import { addPropertyControls, ControlType, Frame, RenderTarget } from "framer"
 import { ScrollContext } from "./ScrollContext"
 import { useOnFocus } from "./useOnFocus"
 
-interface FocusEvent {
-    element: HTMLElement
-    focusablePath: ReadonlyArray<string>
-}
-
-interface Props {
-    width: number
-    height: number
-    children: JSX.Element
-    tapToFocus?: boolean
-    focusableKey?: string
-    onFocus?: (event: FocusEvent) => void
-    unstable_getPreferredChildOnFocusReceive?: (args: {
-        focusableChildren: Map<string, FocusableTreeNode>
-        focusOrigin?: FocusableTreeNode
-        direction?: Direction
-    }) => FocusableTreeNode | undefined
-
-    focusProp: string
-    focusPropType: "string" | "boolean" | "number" | "color"
-
-    focusedValueString: string
-    focusedValueBoolean: boolean
-    focusedValueNumber: number
-    focusedValueColor: string
-
-    blurredValueString: string
-    blurredValueBoolean: boolean
-    blurredValueNumber: number
-    blurredValueColor: string
-}
-
-export function Focusable(props: Props) {
-    if (RenderTarget.current() === RenderTarget.thumbnail) {
-        return (
-            <Frame
-                size="100%"
-                background="#F67280"
-                color="white"
-                style={{ fontSize: "100px" }}
-            >
-                F
-            </Frame>
-        )
-    }
-
-    if (RenderTarget.current() === RenderTarget.canvas) {
-        return (
-            <CanvasPresentation width={props.width} height={props.height}>
-                {props.children}
-            </CanvasPresentation>
-        )
-    }
-
-    return <PreviewPresentation {...props} />
-}
-
 addPropertyControls(Focusable, {
     children: { type: ControlType.ComponentInstance, title: "Child" },
     focusableKey: { type: ControlType.String, title: "Key" },
@@ -131,6 +74,63 @@ addPropertyControls(Focusable, {
         hidden: ({ focusPropType }) => focusPropType !== "color",
     },
 })
+
+interface FocusEvent {
+    element: HTMLElement
+    focusablePath: ReadonlyArray<string>
+}
+
+interface Props {
+    width: number
+    height: number
+    children: JSX.Element
+    tapToFocus?: boolean
+    focusableKey?: string
+    onFocus?: (event: FocusEvent) => void
+    unstable_getPreferredChildOnFocusReceive?: (args: {
+        focusableChildren: Map<string, FocusableTreeNode>
+        focusOrigin?: FocusableTreeNode
+        direction?: Direction
+    }) => FocusableTreeNode | undefined
+
+    focusProp: string
+    focusPropType: "string" | "boolean" | "number" | "color"
+
+    focusedValueString: string
+    focusedValueBoolean: boolean
+    focusedValueNumber: number
+    focusedValueColor: string
+
+    blurredValueString: string
+    blurredValueBoolean: boolean
+    blurredValueNumber: number
+    blurredValueColor: string
+}
+
+export function Focusable(props: Props) {
+    if (RenderTarget.current() === RenderTarget.thumbnail) {
+        return (
+            <Frame
+                size="100%"
+                background="#F67280"
+                color="white"
+                style={{ fontSize: "100px" }}
+            >
+                F
+            </Frame>
+        )
+    }
+
+    if (RenderTarget.current() === RenderTarget.canvas) {
+        return (
+            <CanvasPresentation width={props.width} height={props.height}>
+                {props.children}
+            </CanvasPresentation>
+        )
+    }
+
+    return <PreviewPresentation {...props} />
+}
 
 function CanvasPresentation(props: {
     width: number

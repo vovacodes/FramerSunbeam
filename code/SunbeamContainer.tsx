@@ -108,26 +108,18 @@ function PreviewPresentation({
 
             switch (event.key) {
                 case rightKey:
-                    event.preventDefault()
-                    event.stopPropagation()
                     focusManager.moveRight()
                     return
 
                 case leftKey:
-                    event.preventDefault()
-                    event.stopPropagation()
                     focusManager.moveLeft()
                     return
 
                 case upKey:
-                    event.preventDefault()
-                    event.stopPropagation()
                     focusManager.moveUp()
                     return
 
                 case downKey:
-                    event.preventDefault()
-                    event.stopPropagation()
                     focusManager.moveDown()
                     return
             }
