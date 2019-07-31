@@ -92,6 +92,11 @@ interface Props {
         focusOrigin?: FocusableTreeNode
         direction?: Direction
     }) => FocusableTreeNode | undefined
+    getPreferredChildOnFocusReceive?: (args: {
+        focusableChildren: Map<string, FocusableTreeNode>
+        focusOrigin?: FocusableTreeNode
+        direction?: Direction
+    }) => FocusableTreeNode | undefined
 
     focusProp: string
     focusPropType: "string" | "boolean" | "number" | "color"
@@ -155,6 +160,7 @@ function PreviewPresentation({
     focusableKey,
     onFocus,
     unstable_getPreferredChildOnFocusReceive,
+    getPreferredChildOnFocusReceive,
 
     focusProp,
     focusPropType,
@@ -205,6 +211,7 @@ function PreviewPresentation({
             <SunbeamFocusable
                 focusKey={focusKey}
                 unstable_getPreferredChildOnFocusReceive={
+                    getPreferredChildOnFocusReceive ||
                     unstable_getPreferredChildOnFocusReceive
                 }
             >

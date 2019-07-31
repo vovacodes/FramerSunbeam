@@ -1,10 +1,10 @@
 import * as React from "react"
-import { useMemo, useCallback, useEffect } from "react"
+import { useCallback, useEffect, useMemo } from "react"
 import {
+    Direction,
+    FocusableTreeNode,
     FocusManager,
     SunbeamProvider,
-    FocusableTreeNode,
-    Direction,
 } from "react-sunbeam"
 import { addPropertyControls, ControlType, Frame, RenderTarget } from "framer"
 
@@ -43,6 +43,11 @@ interface Props {
     onKeyPress?: (event: KeyboardEvent) => void
     onFocusUpdate?: (event: { focusPath: ReadonlyArray<string> }) => void
     unstable_getPreferredChildOnFocusReceive?: (args: {
+        focusableChildren: Map<string, FocusableTreeNode>
+        focusOrigin?: FocusableTreeNode
+        direction?: Direction
+    }) => FocusableTreeNode | undefined
+    getPreferredChildOnFocusReceive?: (args: {
         focusableChildren: Map<string, FocusableTreeNode>
         focusOrigin?: FocusableTreeNode
         direction?: Direction
@@ -91,6 +96,7 @@ function PreviewPresentation({
     onKeyPress,
     onFocusUpdate,
     unstable_getPreferredChildOnFocusReceive,
+    getPreferredChildOnFocusReceive,
 }: Props) {
     const focusManager = useMemo(
         () =>
@@ -126,7 +132,6 @@ function PreviewPresentation({
         },
         [upKey, downKey, leftKey, rightKey, onKeyPress]
     )
-
     useGlobalEventListener("keydown", handleKeyDown)
 
     return (
@@ -134,6 +139,7 @@ function PreviewPresentation({
             focusManager={focusManager}
             onFocusUpdate={onFocusUpdate}
             unstable_getPreferredChildOnFocusReceive={
+                getPreferredChildOnFocusReceive ||
                 unstable_getPreferredChildOnFocusReceive
             }
         >

@@ -27,7 +27,12 @@ You can download the example Framer project that demonstrates how to setup Frame
 
 [SunbeamExampleProject.zip](https://github.com/vovaguguiev/FramerSunbeam/files/3168065/SunbeamExampleProject.zip)
 
-## Components
+## Components and API
+
+-   [SunbeamContainer](#sunbeamcontainer)
+-   [Focusable](#focusable)
+-   [Scroll](#scroll)
+-   [Using library in your code components (API)](#using-library-in-your-code-components-api)
 
 ### `SunbeamContainer`
 
@@ -57,6 +62,40 @@ Allows to invoke some function when a keyboard key is pressed. Can be provided v
 
 Allows to invoke a function when the focus is updated. An event object containing the new `focusPath` is passed to this callback.
 Can be provided via [code overrides](https://framer.gitbook.io/framer/code/code-overrides).
+
+##### `getPreferredChildOnFocusReceive?: (args: { focusableChildren: Map<string, FocusableTreeNode>; focusOrigin?: FocusableTreeNode; direction?: Direction; }) => FocusableTreeNode | undefined`
+
+Allows to override the default heuristic of focusing a focusable child when receiving focus.
+Can be provided via [code overrides](https://framer.gitbook.io/framer/code/code-overrides).
+Example:
+
+```jsx
+import { Override } from "framer"
+import { defaultGetPreferredChildOnFocusReceive } from "@framer/vladimirg.framersunbeam/code"
+
+function FocusableContainerOverride(): Override {
+    return {
+        getPreferredChildOnFocusReceive({
+            focusableChildren,
+            focusOrigin,
+            direction,
+        }) {
+            // Initial load, when there is no previous focused element
+            if (!focusOrigin && !direction) {
+                // pick the child with a specific focusKey
+                return focusableChildren.get("my-preferred-child-focus-key")
+            }
+
+            // use default strategy otherwise
+            return defaultGetPreferredChildOnFocusReceive({
+                focusableChildren,
+                focusOrigin,
+                direction,
+            })
+        },
+    }
+}
+```
 
 ### `Focusable`
 
@@ -101,6 +140,40 @@ Value that is passed to the child's prop when the `Focusable` is blurred
 
 Function that is called when the `Focusable` receives focus. Can be provided via [code overrides](https://framer.gitbook.io/framer/code/code-overrides). Receives `focusablePath` which is an array of `focusableKey`s of all `Focusable`s in the hierarchy from the root `Focusable` to the current one. Can be useful for saving the focus state or reacting to the focus updates, e.g. manual scrolling to the focused component
 
+##### `getPreferredChildOnFocusReceive?: (args: { focusableChildren: Map<string, FocusableTreeNode>; focusOrigin?: FocusableTreeNode; direction?: Direction; }) => FocusableTreeNode | undefined`
+
+Allows to override the default heuristic of focusing a focusable child when receiving focus.
+Can be provided via [code overrides](https://framer.gitbook.io/framer/code/code-overrides).
+Example:
+
+```jsx
+import { Override } from "framer"
+import { defaultGetPreferredChildOnFocusReceive } from "@framer/vladimirg.framersunbeam/code"
+
+function FocusableContainerOverride(): Override {
+    return {
+        getPreferredChildOnFocusReceive({
+            focusableChildren,
+            focusOrigin,
+            direction,
+        }) {
+            // Initial load, when there is no previous focused element
+            if (!focusOrigin && !direction) {
+                // pick the child with a specific focusKey
+                return focusableChildren.get("my-preferred-child-focus-key")
+            }
+
+            // use default strategy otherwise
+            return defaultGetPreferredChildOnFocusReceive({
+                focusableChildren,
+                focusOrigin,
+                direction,
+            })
+        },
+    }
+}
+```
+
 ### `Scroll`
 
 Mimics the behaviour of the Framer built-in `Scroll` component but it is aware
@@ -137,20 +210,20 @@ Duration parameter of the Tween transition. See more [here](https://www.framer.c
 
 Easing parameter of the Tween transition. See more [here](https://www.framer.com/api/animation/#tween.ease)
 
-## Using library in your code
+### Using library in your code components (API)
 
 Framer Sunbeam re-exports some of the [react-sunbeam 🌅](https://github.com/vovaguguiev/react-sunbeam) primitives
 and other helper functions so you can use them directly in you code to create your own custom focusable
 components without connecting a Focusable to another component on canvas.
 
-### Example
+#### Example
 
 You can implement your own focusable Button like this:
 
 ```tsx
 import * as React from "react"
 import { addPropertyControls, ControlType } from "framer"
-import { useFocusable } from "@framer/vladimirg.framersunbeam/code"
+import { useFocusable, useOnFocus } from "@framer/vladimirg.framersunbeam/code"
 
 addPropertyControls(Button, {
     focusKey: {
@@ -162,6 +235,10 @@ addPropertyControls(Button, {
 export function Button({ focusKey, width, height }) {
     const ref = React.useRef(null)
     const { focused } = useFocusable(focusKey, ref)
+
+    useOnFocus(focused, () => {
+        console.log(`${focusKey}` was focused)
+    })
 
     return (
         <button
@@ -179,6 +256,10 @@ export function Button({ focusKey, width, height }) {
 ```
 
 ## CHANGELOG
+
+### v1.31.0
+
+Expose `getPreferredChildOnFocusReceive` prop for `SunbeamContainer` and `Focusable`
 
 ### v1.29.0
 
