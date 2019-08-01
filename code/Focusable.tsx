@@ -8,7 +8,7 @@ import {
 } from "react-sunbeam"
 import { addPropertyControls, ControlType, Frame, RenderTarget } from "framer"
 import { ScrollContext } from "./ScrollContext"
-import { useOnFocus } from "./useOnFocus"
+import { useOnFocusedChange } from "./useOnFocusedChange"
 
 addPropertyControls(Focusable, {
     children: { type: ControlType.ComponentInstance, title: "Child" },
@@ -87,6 +87,7 @@ interface Props {
     tapToFocus?: boolean
     focusableKey?: string
     onFocus?: (event: FocusEvent) => void
+    onBlur?: (event: FocusEvent) => void
     unstable_getPreferredChildOnFocusReceive?: (args: {
         focusableChildren: Map<string, FocusableTreeNode>
         focusOrigin?: FocusableTreeNode
@@ -159,6 +160,7 @@ function PreviewPresentation({
     children,
     focusableKey,
     onFocus,
+    onBlur,
     unstable_getPreferredChildOnFocusReceive,
     getPreferredChildOnFocusReceive,
 
@@ -231,6 +233,9 @@ function PreviewPresentation({
                             if (onFocus)
                                 onFocus({ element, focusablePath: path })
                         }}
+                        onBlur={element => {
+                            if (onBlur) onBlur({ element, focusablePath: path })
+                        }}
                     >
                         {React.Children.map(children, child =>
                             React.cloneElement(child, {
@@ -252,6 +257,7 @@ function FocusableWrapper({
     focused,
     onClick,
     onFocus,
+    onBlur,
     children,
 }: {
     width: number
@@ -259,12 +265,17 @@ function FocusableWrapper({
     focused: boolean
     onClick?: () => void
     onFocus: (element: HTMLElement) => void
+    onBlur: (element: HTMLElement) => void
     children: React.ReactNode
 }) {
     const elementRef = useRef(null)
 
-    useOnFocus(focused, () => {
-        onFocus(elementRef.current)
+    useOnFocusedChange(focused, isFocused => {
+        if (isFocused) {
+            onFocus(elementRef.current)
+        } else {
+            onBlur(elementRef.current)
+        }
     })
 
     return (

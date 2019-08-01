@@ -138,7 +138,14 @@ Value that is passed to the child's prop when the `Focusable` is blurred
 
 ##### `onFocus?: ({ element: HTMLElement; focusablePath: ReadonlyArray<string> }) => void`
 
-Function that is called when the `Focusable` receives focus. Can be provided via [code overrides](https://framer.gitbook.io/framer/code/code-overrides). Receives `focusablePath` which is an array of `focusableKey`s of all `Focusable`s in the hierarchy from the root `Focusable` to the current one. Can be useful for saving the focus state or reacting to the focus updates, e.g. manual scrolling to the focused component
+Function that is called when the `Focusable` receives focus.
+Can be provided via [code overrides](https://framer.gitbook.io/framer/code/code-overrides).
+Can be useful for saving the focus state or reacting to the focus updates, e.g. manual scrolling to the focused component
+
+##### `onBlur?: ({ element: HTMLElement; focusablePath: ReadonlyArray<string> }) => void`
+
+Function that is called when the `Focusable` loses focus.
+Can be provided via [code overrides](https://framer.gitbook.io/framer/code/code-overrides).
 
 ##### `getPreferredChildOnFocusReceive?: (args: { focusableChildren: Map<string, FocusableTreeNode>; focusOrigin?: FocusableTreeNode; direction?: Direction; }) => FocusableTreeNode | undefined`
 
@@ -223,7 +230,7 @@ You can implement your own focusable Button like this:
 ```tsx
 import * as React from "react"
 import { addPropertyControls, ControlType } from "framer"
-import { useFocusable, useOnFocus } from "@framer/vladimirg.framersunbeam/code"
+import { useFocusable, useOnFocusedChange } from "@framer/vladimirg.framersunbeam/code"
 
 addPropertyControls(Button, {
     focusKey: {
@@ -236,8 +243,8 @@ export function Button({ focusKey, width, height }) {
     const ref = React.useRef(null)
     const { focused } = useFocusable(focusKey, ref)
 
-    useOnFocus(focused, () => {
-        console.log(`${focusKey}` was focused)
+    useOnFocusedChange(focused, (isFocused) => {
+        if (isFocused) console.log(`${focusKey}` was focused)
     })
 
     return (
@@ -256,6 +263,11 @@ export function Button({ focusKey, width, height }) {
 ```
 
 ## CHANGELOG
+
+### v1.32.0
+
+-   Expose `useOnFocusedChange` hook
+-   New `onBlur` prop on `Focusable`
 
 ### v1.31.0
 

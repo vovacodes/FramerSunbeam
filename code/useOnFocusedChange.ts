@@ -1,16 +1,17 @@
 import { useEffect, useRef } from "react"
 
-export const useOnFocus = (focused: boolean, onFocus: () => void) => {
+export const useOnFocusedChange = (
+    focused: boolean,
+    focusedChangeHandler: (focused: boolean) => void
+) => {
     const prevFocused = usePrevious(focused)
 
     useEffect(() => {
         if (prevFocused === focused) return
+        if (!focusedChangeHandler) return
 
-        if (focused && onFocus) {
-            onFocus()
-            return
-        }
-    }, [prevFocused, focused, onFocus])
+        focusedChangeHandler(focused)
+    }, [prevFocused, focused, focusedChangeHandler])
 }
 
 function usePrevious<T>(value: T): T {

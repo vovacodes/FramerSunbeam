@@ -4,4 +4,4 @@ export {
     unstable_defaultGetPreferredChildOnFocusReceive as defaultGetPreferredChildOnFocusReceive,
 } from "react-sunbeam"
 export { useFocusable } from "./useFocusable"
-export { useOnFocus } from "./useOnFocus"
+export { useOnFocusedChange } from "./useOnFocusedChange"
