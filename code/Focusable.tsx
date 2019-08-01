@@ -83,7 +83,9 @@ interface FocusEvent {
 interface Props {
     width: number
     height: number
-    children: JSX.Element
+    children:
+        | JSX.Element
+        | ((args: { focused: boolean; path: readonly string[] }) => JSX.Element)
     tapToFocus?: boolean
     focusableKey?: string
     onFocus?: (event: FocusEvent) => void
@@ -99,18 +101,18 @@ interface Props {
         direction?: Direction
     }) => FocusableTreeNode | undefined
 
-    focusProp: string
-    focusPropType: "string" | "boolean" | "number" | "color"
+    focusProp?: string
+    focusPropType?: "string" | "boolean" | "number" | "color"
 
-    focusedValueString: string
-    focusedValueBoolean: boolean
-    focusedValueNumber: number
-    focusedValueColor: string
+    focusedValueString?: string
+    focusedValueBoolean?: boolean
+    focusedValueNumber?: number
+    focusedValueColor?: string
 
-    blurredValueString: string
-    blurredValueBoolean: boolean
-    blurredValueNumber: number
-    blurredValueColor: string
+    blurredValueString?: string
+    blurredValueBoolean?: boolean
+    blurredValueNumber?: number
+    blurredValueColor?: string
 }
 
 export function Focusable(props: Props) {
@@ -130,7 +132,9 @@ export function Focusable(props: Props) {
     if (RenderTarget.current() === RenderTarget.canvas) {
         return (
             <CanvasPresentation width={props.width} height={props.height}>
-                {props.children}
+                {typeof props.children === "function"
+                    ? props.children({ focused: false, path: [] })
+                    : props.children}
             </CanvasPresentation>
         )
     }
@@ -237,12 +241,16 @@ function PreviewPresentation({
                             if (onBlur) onBlur({ element, focusablePath: path })
                         }}
                     >
-                        {React.Children.map(children, child =>
-                            React.cloneElement(child, {
-                                [focusProp]: focused
-                                    ? focusedValue
-                                    : blurredValue,
-                            })
+                        {React.Children.map(
+                            typeof children === "function"
+                                ? children({ focused, path })
+                                : children,
+                            child =>
+                                React.cloneElement(child, {
+                                    [focusProp]: focused
+                                        ? focusedValue
+                                        : blurredValue,
+                                })
                         )}
                     </FocusableWrapper>
                 )}

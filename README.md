@@ -264,6 +264,11 @@ export function Button({ focusKey, width, height }) {
 
 ## CHANGELOG
 
+### v1.33.0
+
+-   Expose `Focusable` to use in code
+-   Add commitizen (chore)
+
 ### v1.32.0
 
 -   Expose `useOnFocusedChange` hook
