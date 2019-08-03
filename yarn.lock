@@ -3768,10 +3768,10 @@ react-is@^16.8.1:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.8.6.tgz#5bbc1e2d29141c9fbdfed456343fe2bc430a6a16"
   integrity sha512-aUk3bHfZ2bRSVFFbbeVS4i+lNPZr3/WM5jT2J5omUVV1zzcs1nAaf3l51ctA5FFvCRbhrH0bdAsRRQddFJZPtA==
 
-react-sunbeam@^0.6.1:
-  version "0.6.1"
-  resolved "https://registry.yarnpkg.com/react-sunbeam/-/react-sunbeam-0.6.1.tgz#fe232cae063316399562615e6194342644d49ab8"
-  integrity sha512-rWgeknaHE5dG5V/WTei30EgCqrwniPmOZpsew9ples0fsiCu1TqSMdDPlwX8TYPlH8dG6FLCyF9EK4GbJgLMhg==
+react-sunbeam@^0.7.0:
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/react-sunbeam/-/react-sunbeam-0.7.0.tgz#9dda6108dd90205213dec16158e0a58e1baba7a4"
+  integrity sha512-jUumKNB5JAmSkd88zLGRadGnd7UGn7USgyfBFfsgiAR0arqbPg1pltl02YHCHJmUQZT6lRYsvdryewBkYwq7hg==
 
 react@^16.8:
   version "16.8.6"

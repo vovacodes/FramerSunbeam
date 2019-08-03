@@ -264,6 +264,11 @@ export function Button({ focusKey, width, height }) {
 
 ## CHANGELOG
 
+### v1.34.0
+
+-   Expose `SunbeamContainer` to use in code
+-   Upgrade `react-sunbeam -> 0.7.0`
+
 ### v1.33.0
 
 -   Expose `Focusable` to use in code
