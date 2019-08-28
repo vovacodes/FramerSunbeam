@@ -200,8 +200,8 @@ function DefaultScroll({
 
             const scaleX = viewportWidth / viewport.offsetWidth
             const scaleY = viewportHeight / viewport.offsetHeight
-            const currentScrollX = viewportLeft - trackLeft
-            const currentScrollY = viewportTop - trackTop
+            const currentScrollX = (viewportLeft - trackLeft) / scaleX
+            const currentScrollY = (viewportTop - trackTop) / scaleY
 
             const {
                 width: elementWidth,
@@ -228,7 +228,10 @@ function DefaultScroll({
                 )
                 function ensureScrollXWithinBounds(value: number): number {
                     const minScrollX = 0
-                    const maxScrollX = track.scrollWidth - viewport.offsetWidth
+                    const maxScrollX = Math.max(
+                        track.scrollWidth - viewport.offsetWidth,
+                        0
+                    )
                     if (value < minScrollX) return minScrollX
                     if (value > maxScrollX) return maxScrollX
                     return value
@@ -248,8 +251,10 @@ function DefaultScroll({
                 )
                 function ensureScrollYWithinBounds(value: number): number {
                     const minScrollY = 0
-                    const maxScrollY =
-                        track.scrollHeight - viewport.offsetHeight
+                    const maxScrollY = Math.max(
+                        track.scrollHeight - viewport.offsetHeight,
+                        0
+                    )
                     if (value < minScrollY) return minScrollY
                     if (value > maxScrollY) return maxScrollY
                     return value

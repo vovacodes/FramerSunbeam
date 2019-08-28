@@ -264,6 +264,10 @@ export function Button({ focusKey, width, height }) {
 
 ## CHANGELOG
 
+### v1.35.0
+
+-   Fix Scroll component when a prototype is scaled
+
 ### v1.34.0
 
 -   Expose `SunbeamContainer` to use in code
