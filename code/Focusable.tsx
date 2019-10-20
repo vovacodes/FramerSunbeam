@@ -122,8 +122,8 @@ export function Focusable(props: Props) {
         return (
             <Frame
                 size="100%"
-                background="#F67280"
-                color="white"
+                background="rgb(45, 42, 46)"
+                color="rgb(255, 97, 136)"
                 style={{ fontSize: "100px" }}
             >
                 F

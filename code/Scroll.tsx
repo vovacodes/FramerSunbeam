@@ -148,8 +148,8 @@ export function Scroll(props: Props) {
         return (
             <Frame
                 size="100%"
-                background="C06C84"
-                color="white"
+                background="rgb(45, 42, 46)"
+                color="rgb(120, 220, 232)"
                 style={{ fontSize: "100px" }}
             >
                 S

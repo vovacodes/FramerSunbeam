@@ -59,8 +59,8 @@ export function SunbeamContainer(props: Props) {
         return (
             <Frame
                 size="100%"
-                background="#6C5B7B"
-                color="white"
+                background="rgb(45, 42, 46)"
+                color="rgb(254, 215, 101)"
                 style={{ fontSize: "100px" }}
             >
                 C
