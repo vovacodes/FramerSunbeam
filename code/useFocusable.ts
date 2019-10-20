@@ -2,6 +2,7 @@ import { useContext, MutableRefObject } from "react"
 import {
     useFocusable as useFocusableSunbeam,
     KeyPressListener,
+    FocusEvent,
 } from "react-sunbeam"
 import { useOnFocusedChange } from "./useOnFocusedChange"
 import { FramerSunbeamGlobals } from "./ScrollContext"
@@ -15,12 +16,14 @@ export function useFocusable(
     ref: Element,
     options?: {
         onKeyPress?: KeyPressListener
+        onFocus?: (event: FocusEvent) => void
+        onBlur?: (event: FocusEvent) => void
     }
 ): { focused: boolean; path: string[] } {
     const focusableData = useFocusableSunbeam({
         elementRef: ref,
         focusKey,
-        onKeyPress: options && options.onKeyPress,
+        ...options,
     })
 
     // implement the logic necessary for Scroll component to be aware

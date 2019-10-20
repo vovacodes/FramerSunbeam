@@ -237,7 +237,7 @@ You can implement your own focusable Button like this:
 ```tsx
 import * as React from "react"
 import { addPropertyControls, ControlType } from "framer"
-import { useFocusable, useOnFocusedChange } from "@framer/vladimirg.framersunbeam/code"
+import { useFocusable } from "@framer/vladimirg.framersunbeam/code"
 
 addPropertyControls(Button, {
     focusKey: {
@@ -248,20 +248,17 @@ addPropertyControls(Button, {
 
 export function Button({ focusKey, width, height }) {
     const ref = React.useRef(null)
-    const { focused } = useFocusable(
-        focusKey,
-        ref,
-        { onKeyPress: (event) => {
-            if (event.key === 'Enter') {
+    const { focused } = useFocusable(focusKey, ref, {
+        onKeyPress: event => {
+            if (event.key === "Enter") {
                 console.log('"Enter" was pressed while the button is focused')
                 // prevent event bubbling to the parent
                 event.stopPropagation()
             }
-        }
-    })
-
-    useOnFocusedChange(focused, (isFocused) => {
-        if (isFocused) console.log(`${focusKey}` was focused)
+        },
+        onFocus: () => {
+            console.log(`${focusKey} was focused`)
+        },
     })
 
     return (
@@ -280,6 +277,10 @@ export function Button({ focusKey, width, height }) {
 ```
 
 ## CHANGELOG
+
+### v1.39.0
+
+-   🎩 Introduce `onFocus` and `onBlur` handlers for `useFocusable`
 
 ### v1.37.0
 
