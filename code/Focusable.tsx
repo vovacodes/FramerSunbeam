@@ -4,6 +4,7 @@ import {
     Direction,
     Focusable as SunbeamFocusable,
     FocusableTreeNode,
+    KeyPressListener,
     useSunbeam,
 } from "react-sunbeam"
 import { addPropertyControls, ControlType, Frame, RenderTarget } from "framer"
@@ -90,6 +91,7 @@ interface Props {
     focusableKey?: string
     onFocus?: (event: FocusEvent) => void
     onBlur?: (event: FocusEvent) => void
+    onKeyPress?: KeyPressListener
     unstable_getPreferredChildOnFocusReceive?: (args: {
         focusableChildren: Map<string, FocusableTreeNode>
         focusOrigin?: FocusableTreeNode
@@ -102,7 +104,7 @@ interface Props {
     }) => FocusableTreeNode | undefined
 
     focusProp?: string
-    focusPropType?: "string" | "boolean" | "number" | "color"
+    focusPropType: "string" | "boolean" | "number" | "color"
 
     focusedValueString?: string
     focusedValueBoolean?: boolean
@@ -165,6 +167,7 @@ function PreviewPresentation({
     focusableKey,
     onFocus,
     onBlur,
+    onKeyPress,
     unstable_getPreferredChildOnFocusReceive,
     getPreferredChildOnFocusReceive,
 
@@ -183,7 +186,10 @@ function PreviewPresentation({
 
     tapToFocus,
 }: Props) {
-    const { setFocus } = useSunbeam()
+    const sunbeamContextValue = useSunbeam()
+    const setFocus = sunbeamContextValue
+        ? sunbeamContextValue.setFocus
+        : undefined
     const randomKey = useMemo(
         () => Math.floor(Math.random() * 100000).toString(),
         []
@@ -220,6 +226,7 @@ function PreviewPresentation({
                     getPreferredChildOnFocusReceive ||
                     unstable_getPreferredChildOnFocusReceive
                 }
+                onKeyPress={onKeyPress}
             >
                 {({ focused, path }) => (
                     <FocusableWrapper
@@ -227,7 +234,8 @@ function PreviewPresentation({
                         height={height}
                         focused={focused}
                         onClick={() => {
-                            if (tapToFocus) setFocus(path as string[])
+                            if (tapToFocus && setFocus)
+                                setFocus(path as string[])
                         }}
                         onFocus={element => {
                             if (notifyScrollOnFocus)
@@ -245,12 +253,14 @@ function PreviewPresentation({
                             typeof children === "function"
                                 ? children({ focused, path })
                                 : children,
-                            child =>
-                                React.cloneElement(child, {
+                            child => {
+                                if (!focusProp) return child
+                                return React.cloneElement(child, {
                                     [focusProp]: focused
                                         ? focusedValue
                                         : blurredValue,
                                 })
+                            }
                         )}
                     </FocusableWrapper>
                 )}
@@ -276,9 +286,10 @@ function FocusableWrapper({
     onBlur: (element: HTMLElement) => void
     children: React.ReactNode
 }) {
-    const elementRef = useRef(null)
+    const elementRef = useRef<HTMLDivElement>(null)
 
     useOnFocusedChange(focused, isFocused => {
+        if (!elementRef.current) return
         if (isFocused) {
             onFocus(elementRef.current)
         } else {
@@ -346,10 +357,10 @@ function EmptyStatePlaceholder({
 
 function getFocusedValue(
     focusPropType: "string" | "boolean" | "number" | "color",
-    focusedValueString: string,
-    focusedValueBoolean: boolean,
-    focusedValueNumber: number,
-    focusedValueColor: string
+    focusedValueString: string | undefined,
+    focusedValueBoolean: boolean | undefined,
+    focusedValueNumber: number | undefined,
+    focusedValueColor: string | undefined
 ) {
     switch (focusPropType) {
         case "string":
@@ -368,10 +379,10 @@ function getFocusedValue(
 
 function getBlurredValue(
     focusPropType: "string" | "boolean" | "number" | "color",
-    blurredValueString: string,
-    blurredValueBoolean: boolean,
-    blurredValueNumber: number,
-    blurredValueColor: string
+    blurredValueString: string | undefined,
+    blurredValueBoolean: boolean | undefined,
+    blurredValueNumber: number | undefined,
+    blurredValueColor: string | undefined
 ) {
     switch (focusPropType) {
         case "string":

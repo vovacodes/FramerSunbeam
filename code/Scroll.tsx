@@ -21,6 +21,7 @@ addPropertyControls(Scroll, {
         optionTitles: [
             <span style={{ fontSize: "30px" }}>↕</span>,
             "↔",
+            // @ts-ignore
             <span
                 // @ts-ignore
                 dangerouslySetInnerHtml={{ __html: "&#x6F&#x332;" }}
@@ -172,8 +173,8 @@ function DefaultScroll({
     duration,
     easing,
 }: Props) {
-    const viewportRef = React.useRef(null)
-    const trackRef = React.useRef(null)
+    const viewportRef = React.useRef<HTMLDivElement>(null)
+    const trackRef = React.useRef<HTMLDivElement>(null)
     const [scrollX, setScrollX] = React.useState(0)
     const [scrollY, setScrollY] = React.useState(0)
 
@@ -185,6 +186,7 @@ function DefaultScroll({
         }) => {
             const track = trackRef.current
             const viewport = viewportRef.current
+            if (!viewport || !track) return
 
             const {
                 width: viewportWidth,
@@ -192,11 +194,15 @@ function DefaultScroll({
                 left: viewportLeft,
                 top: viewportTop,
             } = viewport.getBoundingClientRect()
+            const viewportOffsetWidth = viewport.offsetWidth
+            const viewportOffsetHeight = viewport.offsetHeight
 
             const {
                 left: trackLeft,
                 top: trackTop,
             } = track.getBoundingClientRect()
+            const trackScrollWidth = track.scrollWidth
+            const trackScrollHeight = track.scrollHeight
 
             const scaleX = viewportWidth / viewport.offsetWidth
             const scaleY = viewportHeight / viewport.offsetHeight
@@ -229,7 +235,7 @@ function DefaultScroll({
                 function ensureScrollXWithinBounds(value: number): number {
                     const minScrollX = 0
                     const maxScrollX = Math.max(
-                        track.scrollWidth - viewport.offsetWidth,
+                        trackScrollWidth - viewportOffsetWidth,
                         0
                     )
                     if (value < minScrollX) return minScrollX
@@ -252,7 +258,7 @@ function DefaultScroll({
                 function ensureScrollYWithinBounds(value: number): number {
                     const minScrollY = 0
                     const maxScrollY = Math.max(
-                        track.scrollHeight - viewport.offsetHeight,
+                        trackScrollHeight - viewportOffsetHeight,
                         0
                     )
                     if (value < minScrollY) return minScrollY

@@ -114,25 +114,32 @@ function PreviewPresentation({
 
             switch (event.key) {
                 case rightKey:
+                    event.preventDefault()
+                    event.stopPropagation()
                     focusManager.moveRight()
                     return
 
                 case leftKey:
+                    event.preventDefault()
+                    event.stopPropagation()
                     focusManager.moveLeft()
                     return
 
                 case upKey:
+                    event.preventDefault()
+                    event.stopPropagation()
                     focusManager.moveUp()
                     return
 
                 case downKey:
+                    event.preventDefault()
+                    event.stopPropagation()
                     focusManager.moveDown()
                     return
             }
         },
         [upKey, downKey, leftKey, rightKey, onKeyPress]
     )
-    useGlobalEventListener("keydown", handleKeyDown)
 
     return (
         <SunbeamProvider
@@ -142,24 +149,11 @@ function PreviewPresentation({
                 getPreferredChildOnFocusReceive ||
                 unstable_getPreferredChildOnFocusReceive
             }
+            onKeyPress={handleKeyDown}
         >
             {children}
         </SunbeamProvider>
     )
-}
-
-type EventListener = (evt: Event) => void
-function useGlobalEventListener<E extends Event>(
-    eventName: string,
-    listener: EventListener
-) {
-    useEffect(() => {
-        window.addEventListener(eventName, listener)
-
-        return () => {
-            window.removeEventListener(eventName, listener)
-        }
-    }, [eventName, listener])
 }
 
 // FIXME: this is copy-paste from Focusable.tsx because we can't share

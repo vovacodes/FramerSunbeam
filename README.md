@@ -147,6 +147,13 @@ Can be useful for saving the focus state or reacting to the focus updates, e.g. 
 Function that is called when the `Focusable` loses focus.
 Can be provided via [code overrides](https://framer.gitbook.io/framer/code/code-overrides).
 
+##### `onKeyPress?: (event: KeyboardEvent) => void`
+
+Function that is called when the `Focusable` is focused and a key is pressed.
+If `event.stopPropagation()` is called inside the function the `onKeyPress` handlers
+of the parent and other focusable ancestors won't be called
+Can be provided via [code overrides](https://framer.gitbook.io/framer/code/code-overrides).
+
 ##### `getPreferredChildOnFocusReceive?: (args: { focusableChildren: Map<string, FocusableTreeNode>; focusOrigin?: FocusableTreeNode; direction?: Direction; }) => FocusableTreeNode | undefined`
 
 Allows to override the default heuristic of focusing a focusable child when receiving focus.
@@ -241,7 +248,17 @@ addPropertyControls(Button, {
 
 export function Button({ focusKey, width, height }) {
     const ref = React.useRef(null)
-    const { focused } = useFocusable(focusKey, ref)
+    const { focused } = useFocusable(
+        focusKey,
+        ref,
+        { onKeyPress: (event) => {
+            if (event.key === 'Enter') {
+                console.log('"Enter" was pressed while the button is focused')
+                // prevent event bubbling to the parent
+                event.stopPropagation()
+            }
+        }
+    })
 
     useOnFocusedChange(focused, (isFocused) => {
         if (isFocused) console.log(`${focusKey}` was focused)
@@ -263,6 +280,11 @@ export function Button({ focusKey, width, height }) {
 ```
 
 ## CHANGELOG
+
+### v1.37.0
+
+-   🎹 Introduce key press management (`onKeyPress` handler for `SunbeamContainer`, `Focusable` and `useFocusable`)
+-   ⏫ Upgrade `react-sunbeam -> 0.9.0`
 
 ### v1.35.0
 

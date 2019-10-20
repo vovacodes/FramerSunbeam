@@ -1,12 +1,18 @@
 import { createContext } from "react"
 
-export interface ScrollContextValue {
-    notifyScrollOnFocus: ({ boundingBox: ClientRect }) => void
+export type FramerSunbeamGlobals = {
+    SunbeamScrollContext: typeof ScrollContext
 }
 
-export const ScrollContext = createContext<ScrollContextValue | null>(null)
+export type ScrollContextValue = {
+    notifyScrollOnFocus: (args: { boundingBox: ClientRect }) => void
+}
 
-// Because of the limitation of Framer X we can't
-// export singletons as a module from the package
-// so exporting it as a global variable for now
-window["SunbeamScrollContext"] = ScrollContext
+export const ScrollContext = createContext<ScrollContextValue | null>({
+        notifyScrollOnFocus: () => {},
+    })
+
+    // Because of the limitation of Framer X we can't
+    // export singletons as a module from the package
+    // so exporting it as a global variable for now
+;((window as unknown) as FramerSunbeamGlobals).SunbeamScrollContext = ScrollContext

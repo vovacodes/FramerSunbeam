@@ -1,7 +1,10 @@
 import { useContext, MutableRefObject } from "react"
-import { useFocusable as useFocusableSunbeam } from "react-sunbeam"
+import {
+    useFocusable as useFocusableSunbeam,
+    KeyPressListener,
+} from "react-sunbeam"
 import { useOnFocusedChange } from "./useOnFocusedChange"
-import { ScrollContextValue } from "./ScrollContext"
+import { FramerSunbeamGlobals } from "./ScrollContext"
 
 type Element = MutableRefObject<{
     getBoundingClientRect(): ClientRect
@@ -9,13 +12,20 @@ type Element = MutableRefObject<{
 
 export function useFocusable(
     focusKey: string,
-    ref: Element
+    ref: Element,
+    options?: {
+        onKeyPress?: KeyPressListener
+    }
 ): { focused: boolean; path: string[] } {
-    const focusableData = useFocusableSunbeam(focusKey, ref)
+    const focusableData = useFocusableSunbeam({
+        elementRef: ref,
+        focusKey,
+        onKeyPress: options && options.onKeyPress,
+    })
 
     // implement the logic necessary for Scroll component to be aware
-    const contextValue = useContext<ScrollContextValue>(
-        (window as any).SunbeamScrollContext
+    const contextValue = useContext(
+        ((window as unknown) as FramerSunbeamGlobals).SunbeamScrollContext
     )
     const notifyScrollOnFocus = contextValue
         ? contextValue.notifyScrollOnFocus
