@@ -74,6 +74,19 @@ addPropertyControls(Focusable, {
         title: "Blurred value",
         hidden: ({ focusPropType }) => focusPropType !== "color",
     },
+
+    paddingTop: {
+        title: "Top Padding",
+        type: ControlType.Number,
+        min: -1000,
+        max: 1000,
+    },
+    paddingLeft: {
+        title: "Left Padding",
+        type: ControlType.Number,
+        min: -1000,
+        max: 1000,
+    },
 })
 
 interface FocusEvent {
@@ -84,6 +97,8 @@ interface FocusEvent {
 interface Props {
     width: number
     height: number
+    paddingTop: number
+    paddingLeft: number
     children:
         | JSX.Element
         | ((args: { focused: boolean; path: readonly string[] }) => JSX.Element)
@@ -133,7 +148,12 @@ export function Focusable(props: Props) {
 
     if (RenderTarget.current() === RenderTarget.canvas) {
         return (
-            <CanvasPresentation width={props.width} height={props.height}>
+            <CanvasPresentation
+                width={props.width}
+                height={props.height}
+                paddingTop={props.paddingTop}
+                paddingLeft={props.paddingLeft}
+            >
                 {typeof props.children === "function"
                     ? props.children({ focused: false, path: [] })
                     : props.children}
@@ -147,12 +167,24 @@ export function Focusable(props: Props) {
 function CanvasPresentation(props: {
     width: number
     height: number
+    paddingTop: number
+    paddingLeft: number
     children: JSX.Element
 }) {
-    const { width, height, children } = props
+    const { width, height, paddingTop, paddingLeft, children } = props
 
     return React.Children.count(children) > 0 ? (
-        children
+        <div
+            style={{
+                position: "relative",
+                top: paddingTop,
+                left: paddingLeft,
+                width,
+                height,
+            }}
+        >
+            {children}
+        </div>
     ) : (
         <EmptyStatePlaceholder width={width} height={height}>
             Connect to frame or component
@@ -163,6 +195,8 @@ function CanvasPresentation(props: {
 function PreviewPresentation({
     width,
     height,
+    paddingTop,
+    paddingLeft,
     children,
     focusableKey,
     onFocus,
@@ -232,6 +266,8 @@ function PreviewPresentation({
                     <FocusableWrapper
                         width={width}
                         height={height}
+                        paddingTop={paddingTop}
+                        paddingLeft={paddingLeft}
                         focused={focused}
                         onClick={() => {
                             if (tapToFocus && setFocus)
@@ -272,6 +308,8 @@ function PreviewPresentation({
 function FocusableWrapper({
     width,
     height,
+    paddingTop,
+    paddingLeft,
     focused,
     onClick,
     onFocus,
@@ -280,6 +318,8 @@ function FocusableWrapper({
 }: {
     width: number
     height: number
+    paddingTop: number
+    paddingLeft: number
     focused: boolean
     onClick?: () => void
     onFocus: (element: HTMLElement) => void
@@ -298,8 +338,25 @@ function FocusableWrapper({
     })
 
     return (
-        <div ref={elementRef} style={{ width, height }} onClick={onClick}>
-            {children}
+        <div
+            ref={elementRef}
+            style={{
+                width,
+                height,
+            }}
+            onClick={onClick}
+        >
+            <div
+                style={{
+                    position: "relative",
+                    top: paddingTop,
+                    left: paddingLeft,
+                    width,
+                    height,
+                }}
+            >
+                {children}
+            </div>
         </div>
     )
 }
