@@ -1,6 +1,6 @@
 {
-    "main": "dist/index.js",
     "license": "MIT",
+    "main": "dist/index.js",
     "scripts": {
         "commit": "git-cz",
         "type-check": "tsc --noEmit",
@@ -16,7 +16,7 @@
         "commitizen": "^4.0.3",
         "cz-conventional-changelog": "^3.0.2",
         "eventemitter3": "^4.0.0",
-        "framer": "^1.0",
+        "framer": "1.1.6",
         "framer-cli": "1.5.11",
         "framer-motion": "^1.6.14",
         "husky": "^1.3.1",
@@ -41,10 +41,9 @@
         }
     },
     "framer": {
-        "id": "15bddf01-7838-48d7-9e25-21bbff735374",
         "displayName": "Framer Sunbeam"
     },
     "author": "Vladimir Guguiev",
     "name": "@framer/vladimirg.framersunbeam",
-    "version": "1.41.0"
+    "version": "1.42.0"
 }
