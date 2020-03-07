@@ -30,6 +30,12 @@ addPropertyControls(SunbeamContainer, {
         title: "Right key",
         defaultValue: "ArrowRight",
     },
+    onKeyPress: {
+        type: ControlType.EventHandler,
+    },
+    onFocusUpdate: {
+        type: ControlType.EventHandler,
+    },
 })
 
 interface Props {

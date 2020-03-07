@@ -34,45 +34,45 @@ addPropertyControls(Focusable, {
     focusedValueString: {
         type: ControlType.String,
         title: "Focused value",
-        hidden: ({ focusPropType }) => focusPropType !== "string",
+        hidden: ({ focusPropType }: Props) => focusPropType !== "string",
     },
     focusedValueBoolean: {
         type: ControlType.Boolean,
         title: "Focused value",
-        hidden: ({ focusPropType }) => focusPropType !== "boolean",
+        hidden: ({ focusPropType }: Props) => focusPropType !== "boolean",
     },
     focusedValueNumber: {
         type: ControlType.Number,
         title: "Focused value",
         step: 0.01,
-        hidden: ({ focusPropType }) => focusPropType !== "number",
+        hidden: ({ focusPropType }: Props) => focusPropType !== "number",
     },
     focusedValueColor: {
         type: ControlType.Color,
         title: "Focused value",
-        hidden: ({ focusPropType }) => focusPropType !== "color",
+        hidden: ({ focusPropType }: Props) => focusPropType !== "color",
     },
 
     blurredValueString: {
         type: ControlType.String,
         title: "Blurred value",
-        hidden: ({ focusPropType }) => focusPropType !== "string",
+        hidden: ({ focusPropType }: Props) => focusPropType !== "string",
     },
     blurredValueBoolean: {
         type: ControlType.Boolean,
         title: "Blurred value",
-        hidden: ({ focusPropType }) => focusPropType !== "boolean",
+        hidden: ({ focusPropType }: Props) => focusPropType !== "boolean",
     },
     blurredValueNumber: {
         type: ControlType.Number,
         title: "Blurred value",
         step: 0.01,
-        hidden: ({ focusPropType }) => focusPropType !== "number",
+        hidden: ({ focusPropType }: Props) => focusPropType !== "number",
     },
     blurredValueColor: {
         type: ControlType.Color,
         title: "Blurred value",
-        hidden: ({ focusPropType }) => focusPropType !== "color",
+        hidden: ({ focusPropType }: Props) => focusPropType !== "color",
     },
 
     paddingTop: {
@@ -86,6 +86,16 @@ addPropertyControls(Focusable, {
         type: ControlType.Number,
         min: -1000,
         max: 1000,
+    },
+
+    onFocus: {
+        type: ControlType.EventHandler,
+    },
+    onBlur: {
+        type: ControlType.EventHandler,
+    },
+    onKeyPress: {
+        type: ControlType.EventHandler,
     },
 })
 

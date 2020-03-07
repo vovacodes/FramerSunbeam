@@ -1,6 +1,7 @@
 import * as React from "react"
 import { Frame, addPropertyControls, ControlType, RenderTarget } from "framer"
 import { ScrollContext } from "./ScrollContext"
+import { ReactElement } from "react"
 
 addPropertyControls(Scroll, {
     children: {
@@ -52,7 +53,7 @@ addPropertyControls(Scroll, {
         min: 0,
         step: 10,
         displayStepper: true,
-        hidden(props) {
+        hidden(props: Props) {
             return props.transitionType !== "spring"
         },
     },
@@ -63,7 +64,7 @@ addPropertyControls(Scroll, {
         min: 0,
         step: 10,
         displayStepper: true,
-        hidden(props) {
+        hidden(props: Props) {
             return props.transitionType !== "spring"
         },
     },
@@ -76,7 +77,7 @@ addPropertyControls(Scroll, {
         step: 0.1,
         unit: "s",
         displayStepper: true,
-        hidden(props) {
+        hidden(props: Props) {
             return props.transitionType !== "tween"
         },
     },
@@ -110,7 +111,7 @@ addPropertyControls(Scroll, {
             "backInOut",
             "anticipate",
         ],
-        hidden(props) {
+        hidden(props: Props) {
             return props.transitionType !== "tween"
         },
     },
@@ -277,7 +278,9 @@ function DefaultScroll({
         [onChildFocus]
     )
 
-    const child = children && React.Children.toArray(children)[0]
+    const child =
+        children &&
+        (React.Children.toArray(children)[0] as ReactElement | undefined)
 
     if (!child) {
         return <EmptyStatePlaceholder width={width} height={height} />
@@ -287,6 +290,8 @@ function DefaultScroll({
         transitionType === "spring"
             ? { type: "spring", damping, stiffness }
             : { type: "tween", duration, ease: easing }
+
+    const isPreview = RenderTarget.current() === RenderTarget.preview
 
     return (
         <ScrollContext.Provider value={contextValue}>
@@ -307,6 +312,7 @@ function DefaultScroll({
                     height={child && child.props.height}
                     animate={{ x: -scrollX, y: -scrollY }}
                     transition={transition}
+                    style={isPreview ? { willChange: "transform" } : undefined}
                 >
                     {child}
                 </Frame>
