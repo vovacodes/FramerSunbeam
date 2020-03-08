@@ -41,10 +41,9 @@
         }
     },
     "framer": {
-        "displayName": "Framer Sunbeam",
-        "id": "ada47ea8-1f4a-4ee9-865d-8edec5d5e106"
+        "displayName": "Framer Sunbeam"
     },
     "author": "Vladimir Guguiev",
     "name": "@framer/vladimirg.framersunbeam",
-    "version": "1.42.0"
+    "version": "1.43.0"
 }
