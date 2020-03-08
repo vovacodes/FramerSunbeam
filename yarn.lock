@@ -3355,10 +3355,10 @@ react-is@^16.8.1:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.0.tgz#0f37c3613c34fe6b37cd7f763a0d6293ab15c527"
   integrity sha512-GFMtL0vHkiBv9HluwNZTggSn/sCyEt9n02aM0dSAjGGyqyNlAyftYm4phPxdvCigG15JreC5biwxCgTAJZ7yAA==
 
-react-sunbeam@^0.10.0:
-  version "0.10.1"
-  resolved "https://registry.yarnpkg.com/react-sunbeam/-/react-sunbeam-0.10.1.tgz#a973bdc884e25b2f59abd9137a6c191582b2d0d4"
-  integrity sha512-P5mAQvrB0hheHCyqRl462IJOIpJG6/9KvGTm/YxSws2+yf9OS1yDjNut399+YqwND73M8pPElXZyxsDbjLcTAg==
+react-sunbeam@^0.11.0:
+  version "0.11.0"
+  resolved "https://registry.yarnpkg.com/react-sunbeam/-/react-sunbeam-0.11.0.tgz#80e5a8da61283af6d89fcebba60cced97aec99ab"
+  integrity sha512-oPdGsEWjrHJr5yAHkXByGFTcANU2dqGg4R2zUOcqkPIDrb8hhfLYvFgPAaBW77v0ickSjyWRFj4jEf/8WmQh1w==
   dependencies:
     "@types/nanoid" "^2.1.0"
     nanoid "^2.1.2"

@@ -282,6 +282,7 @@ export function Button({ focusKey, width, height }) {
 
 -   🦚 Add EventHandler controls for `onFocus`, `onBlur` etc...
 -   🎬 Slightly improve scrolling performance of `Scroll`
+-   ⬆️ Update `react-sunbeam` to `0.11.0`
 
 ### v1.39.0
 
