@@ -278,6 +278,11 @@ export function Button({ focusKey, width, height }) {
 
 ## CHANGELOG
 
+### v1.43.0
+
+-   🦚 Add EventHandler controls for `onFocus`, `onBlur` etc...
+-   🎬 Slightly improve scrolling performance of `Scroll`
+
 ### v1.39.0
 
 -   🎩 Introduce `onFocus` and `onBlur` handlers for `useFocusable`
