@@ -1,5 +1,11 @@
 import * as React from "react"
-import { Frame, addPropertyControls, ControlType, RenderTarget } from "framer"
+import {
+    Frame,
+    addPropertyControls,
+    ControlType,
+    RenderTarget,
+    Transition,
+} from "framer"
 import { ScrollContext } from "./ScrollContext"
 import { ReactElement } from "react"
 
@@ -49,89 +55,15 @@ addPropertyControls(Scroll, {
             return props.direction === "vertical"
         },
     },
+    transition: {
+        title: "Transition",
+        type: ControlType.Transition,
+        defaultValue: { type: "spring", damping: 40, stiffness: 300 },
+    },
     background: {
         title: "Fill",
         type: ControlType.Color,
         defaultValue: "none",
-    },
-
-    // Transition props
-    transitionType: {
-        title: "Transition",
-        type: ControlType.SegmentedEnum,
-        defaultValue: "spring",
-        options: ["spring", "tween"],
-        optionTitles: ["Spring", "Tween"],
-    },
-    // spring
-    damping: {
-        title: "Damping",
-        type: ControlType.Number,
-        defaultValue: 40,
-        min: 0,
-        step: 10,
-        displayStepper: true,
-        hidden(props: Props) {
-            return props.transitionType !== "spring"
-        },
-    },
-    stiffness: {
-        title: "Stiffness",
-        type: ControlType.Number,
-        defaultValue: 300,
-        min: 0,
-        step: 10,
-        displayStepper: true,
-        hidden(props: Props) {
-            return props.transitionType !== "spring"
-        },
-    },
-    // tween
-    duration: {
-        title: "Duration",
-        type: ControlType.Number,
-        defaultValue: 0.2,
-        min: 0,
-        step: 0.1,
-        unit: "s",
-        displayStepper: true,
-        hidden(props: Props) {
-            return props.transitionType !== "tween"
-        },
-    },
-    easing: {
-        title: "Easing",
-        type: ControlType.Enum,
-        defaultValue: "easeOut",
-        options: [
-            "linear",
-            "easeIn",
-            "easeOut",
-            "easeInOut",
-            "circIn",
-            "circOut",
-            "circInOut",
-            "backIn",
-            "backOut",
-            "backInOut",
-            "anticipate",
-        ],
-        optionTitles: [
-            "linear",
-            "easeIn",
-            "easeOut",
-            "easeInOut",
-            "circIn",
-            "circOut",
-            "circInOut",
-            "backIn",
-            "backOut",
-            "backInOut",
-            "anticipate",
-        ],
-        hidden(props: Props) {
-            return props.transitionType !== "tween"
-        },
     },
 })
 
@@ -144,24 +76,7 @@ interface Props {
     vertical_stickiness: "auto" | "top" | "bottom"
     horizontal_stickiness: "auto" | "left" | "right"
     background: string
-    transitionType: "spring" | "tween"
-    // spring
-    damping: number
-    stiffness: number
-    // tween
-    duration: number
-    easing:
-        | "linear"
-        | "easeIn"
-        | "easeOut"
-        | "easeInOut"
-        | "circIn"
-        | "circOut"
-        | "circInOut"
-        | "backIn"
-        | "backOut"
-        | "backInOut"
-        | "anticipate"
+    transition: Transition
 }
 
 export function Scroll(props: Props) {
@@ -190,11 +105,7 @@ function DefaultScroll({
     vertical_stickiness,
     horizontal_stickiness,
     background,
-    transitionType,
-    damping,
-    stiffness,
-    duration,
-    easing,
+    transition,
 }: Props) {
     const viewportRef = React.useRef<HTMLDivElement>(null)
     const trackRef = React.useRef<HTMLDivElement>(null)
@@ -348,11 +259,6 @@ function DefaultScroll({
     if (!child) {
         return <EmptyStatePlaceholder width={width} height={height} />
     }
-
-    const transition =
-        transitionType === "spring"
-            ? { type: "spring", damping, stiffness }
-            : { type: "tween", duration, ease: easing }
 
     const isPreview = RenderTarget.current() === RenderTarget.preview
 

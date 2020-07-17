@@ -21,11 +21,7 @@ Provides three easy to use code components.
 
 ## Example Project
 
-You can download the example Framer project that demonstrates how to setup Framer Sunbeam below. Unzip the archive and open the file in Framer X.
-
-![Example project screenshot](https://user-images.githubusercontent.com/1524432/57556043-31c77080-7376-11e9-8afd-5c403954abbb.png)
-
-[SunbeamExampleProject.zip](https://github.com/vovaguguiev/FramerSunbeam/files/3168065/SunbeamExampleProject.zip)
+You can check out the example project that demonstrates how to set up Framer Sunbeam [here](https://framer.com/projects/Framer-Sunbeam-Examples-jtSRdSG3fWczUc5PUO84).
 
 ## Components and API
 
@@ -222,27 +218,11 @@ Controls the scrolling behaviour **when the focused `Focusable` is wider than th
 -   The `"left"` mode always aligns the `Focusable`'s left edge with the viewport's left disregarding of the scrolling direction.
 -   The `"right"` mode always aligns the `Focusable`'s right edge with the viewport's right disregarding of the scrolling direction.
 
-##### **Transition** - `transitionType: "spring" | "tween"`
+##### **Transition** - `transition: { type: "spring", damping: number, stiffness: number } | { type: "tween", duration: number, easing: string }` - default `{ type: "spring", damping: 40, stiffness: 300 }`
 
-Type of the transition to use for scrolling: [Spring](https://www.framer.com/api/animation/#spring) or [Tween](https://www.framer.com/api/animation/#tween)
+The transition to use for the scrolling animation.
 
-##### **Damping** - `damping: number`
-
-Damping parameter of the Spring transition. See more [here](https://www.framer.com/api/animation/#spring.damping)
-
-##### **Stiffness** - `stiffness: number`
-
-Stiffness parameter of the Spring transition. See more [here](https://www.framer.com/api/animation/#spring.stiffness)
-
-##### **Duration** - `duration: number`
-
-Duration parameter of the Tween transition. See more [here](https://www.framer.com/api/animation/#tween.duration)
-
-##### **Easing** - `easing: "linear" | "easeIn" | "easeOut" | "easeInOut" | "circIn" | "circOut" | "circInOut" | "backIn" | "backOut" | "backInOut" | "anticipate"`
-
-Easing parameter of the Tween transition. See more [here](https://www.framer.com/api/animation/#tween.ease)
-
-### Using library in your code components (API)
+### Using the library in your code components (API)
 
 Framer Sunbeam re-exports some of the [react-sunbeam 🌅](https://github.com/vovaguguiev/react-sunbeam) primitives
 and other helper functions so you can use them directly in you code to create your own custom focusable
@@ -299,6 +279,7 @@ export function Button({ focusKey, width, height }) {
 ### v1.44.0
 
 -   🥢 Add `vertical_stickiness` and `horizontal_stickiness` props to `Scroll`.
+-   🎛 Use `ControlType.Transition` instead of a set of different property controls for defining the scrolling animation in `Scroll`.
 
 ### v1.43.0
 
