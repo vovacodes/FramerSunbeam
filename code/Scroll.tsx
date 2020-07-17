@@ -31,6 +31,24 @@ addPropertyControls(Scroll, {
         ] as any,
         defaultValue: "both",
     },
+    vertical_stickiness: {
+        title: "↕ Stickiness",
+        type: ControlType.Enum,
+        options: ["auto", "top", "bottom"],
+        optionTitles: ["Auto", "Top edge", "Bottom edge"],
+        hidden(props: Props) {
+            return props.direction === "horizontal"
+        },
+    },
+    horizontal_stickiness: {
+        title: "↔Stickiness",
+        type: ControlType.Enum,
+        options: ["auto", "left", "right"],
+        optionTitles: ["Auto", "Left edge", "Right edge"],
+        hidden(props: Props) {
+            return props.direction === "vertical"
+        },
+    },
     background: {
         title: "Fill",
         type: ControlType.Color,
@@ -123,6 +141,8 @@ interface Props {
     children: React.ReactElement
     overflow: boolean
     direction: "vertical" | "horizontal" | "both"
+    vertical_stickiness: "auto" | "top" | "bottom"
+    horizontal_stickiness: "auto" | "left" | "right"
     background: string
     transitionType: "spring" | "tween"
     // spring
@@ -167,6 +187,8 @@ function DefaultScroll({
     children,
     overflow,
     direction,
+    vertical_stickiness,
+    horizontal_stickiness,
     background,
     transitionType,
     damping,
@@ -225,11 +247,31 @@ function DefaultScroll({
             let newScrollX = 0
             if (direction === "horizontal" || direction === "both") {
                 let deltaScrollX = 0
-                if (elementLeft < viewportLeft) {
-                    deltaScrollX = (elementLeft - viewportLeft) / scaleX
-                } else if (elementRightEdge > viewportWidth) {
-                    deltaScrollX = (elementRightEdge - viewportWidth) / scaleX
+
+                if (
+                    horizontal_stickiness === "auto" ||
+                    elementWidth <= viewportWidth
+                ) {
+                    if (elementLeft < viewportLeft) {
+                        deltaScrollX = (elementLeft - viewportLeft) / scaleX
+                    } else if (elementRightEdge > viewportWidth) {
+                        deltaScrollX =
+                            (elementRightEdge - viewportWidth) / scaleX
+                    }
+                } else {
+                    // if there is not enough space for the whole element to fit within the viewport
+                    if (horizontal_stickiness === "left") {
+                        // and `horizontal_stickiness === "left"` align the element's
+                        // left edge too the left of the viewport
+                        deltaScrollX = (elementLeft - viewportLeft) / scaleX
+                    } else if (horizontal_stickiness === "right") {
+                        // and `horizontal_stickiness === "right"` align the element's
+                        // right edge too the right of the viewport
+                        deltaScrollX =
+                            (elementRightEdge - viewportWidth) / scaleX
+                    }
                 }
+
                 newScrollX = ensureScrollXWithinBounds(
                     currentScrollX + deltaScrollX
                 )
@@ -248,14 +290,35 @@ function DefaultScroll({
             let newScrollY = 0
             if (direction === "vertical" || direction === "both") {
                 let deltaScrollY = 0
-                if (elementTop < viewportTop) {
-                    deltaScrollY = (elementTop - viewportTop) / scaleY
-                } else if (elementBottomEdge > viewportHeight) {
-                    deltaScrollY = (elementBottomEdge - viewportHeight) / scaleY
+
+                if (
+                    vertical_stickiness === "auto" ||
+                    elementHeight <= viewportHeight
+                ) {
+                    if (elementTop < viewportTop) {
+                        deltaScrollY = (elementTop - viewportTop) / scaleY
+                    } else if (elementBottomEdge > viewportHeight) {
+                        deltaScrollY =
+                            (elementBottomEdge - viewportHeight) / scaleY
+                    }
+                } else {
+                    // if there is not enough space for the whole element to fit within the viewport
+                    if (vertical_stickiness === "top") {
+                        // and `stickiness === "top"` align the element's
+                        // top edge too the top of the viewport
+                        deltaScrollY = (elementTop - viewportTop) / scaleY
+                    } else if (vertical_stickiness === "bottom") {
+                        // and `stickiness === "bottom"` align the element's
+                        // bottom edge too the bottom of the viewport
+                        deltaScrollY =
+                            (elementBottomEdge - viewportHeight) / scaleY
+                    }
                 }
+
                 newScrollY = ensureScrollYWithinBounds(
                     currentScrollY + deltaScrollY
                 )
+
                 function ensureScrollYWithinBounds(value: number): number {
                     const minScrollY = 0
                     const maxScrollY = Math.max(

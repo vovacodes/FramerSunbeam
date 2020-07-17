@@ -204,6 +204,24 @@ Specifies whether the content overflowing the `Scroll` viewport should be visibl
 
 The allowed direction of scrolling
 
+##### **↕ Stickiness** - `vertical_stickiness: "auto" | "top" | "bottom"` - default `"auto"`
+
+Controls the scrolling behaviour **when the focused `Focusable` is taller than the viewport of the `Scroll`**.
+
+-   The default `"auto"` mode aligns the `Focusable`'s top edge with the viewport's top when scrolling down,
+    and the bottom edge with the viewport's bottom when scrolling up.
+-   The `"top"` mode always aligns the `Focusable`'s top edge with the viewport's top disregarding of the scrolling direction.
+-   The `"bottom"` mode always aligns the `Focusable`'s bottom edge with the viewport's bottom disregarding of the scrolling direction.
+
+##### **↔ Stickiness** - `horizontal_stickiness: "auto" | "left" | "right"` - default `"auto"`
+
+Controls the scrolling behaviour **when the focused `Focusable` is wider than the viewport of the `Scroll`**.
+
+-   The default `"auto"` mode aligns the `Focusable`'s left edge with the viewport's left when scrolling to the right,
+    and the right edge with the viewport's right when scrolling to the left.
+-   The `"left"` mode always aligns the `Focusable`'s left edge with the viewport's left disregarding of the scrolling direction.
+-   The `"right"` mode always aligns the `Focusable`'s right edge with the viewport's right disregarding of the scrolling direction.
+
 ##### **Transition** - `transitionType: "spring" | "tween"`
 
 Type of the transition to use for scrolling: [Spring](https://www.framer.com/api/animation/#spring) or [Tween](https://www.framer.com/api/animation/#tween)
@@ -277,6 +295,10 @@ export function Button({ focusKey, width, height }) {
 ```
 
 ## CHANGELOG
+
+### v1.44.0
+
+-   🥢 Add `vertical_stickiness` and `horizontal_stickiness` props to `Scroll`.
 
 ### v1.43.0
 
