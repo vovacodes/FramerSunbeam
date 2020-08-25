@@ -225,7 +225,7 @@ The transition to use for the scrolling animation.
 ### Using the library in your code components (API)
 
 Framer Sunbeam re-exports some of the [react-sunbeam 🌅](https://github.com/vovaguguiev/react-sunbeam) primitives
-and other helper functions so you can use them directly in you code to create your own custom focusable
+and other helper functions, so you can use them directly in you code to create your own custom focusable
 components without connecting a Focusable to another component on canvas.
 
 #### Example
@@ -270,6 +270,57 @@ export function Button({ focusKey, width, height }) {
         >
             Go
         </button>
+    )
+}
+```
+
+In the example above we are using the `useFocusable` hook that allows to programmatically declare the current component
+as "focusable" and use its focus state to change the rendering. While being convenient, `useFocusable` only allows to declare
+a "leaf" focusable, so a node that cannot have any focusable children. Should you need the latter, use `Focusable` component instead.
+
+```tsx
+import * as React from "react"
+import { addPropertyControls, ControlType } from "framer"
+import { Focusable } from "@framer/vladimirg.framersunbeam/code"
+
+addPropertyControls(Button, {
+    focusKey: {
+        type: ControlType.String,
+        defaultValue: "CHANGE THIS TO A UNIQUE VALUE",
+    },
+})
+
+export function Button({ focusKey, width, height, children }) {
+    return (
+        <Focusable
+            focusableKey={focusKey}
+            style={{ width, height }}
+            onKeyPress={event => {
+                if (event.key === "Enter") {
+                    console.log(
+                        '"Enter" was pressed while the button is focused'
+                    )
+                    // prevent event bubbling to the parent
+                    event.stopPropagation()
+                }
+            }}
+            onFocus={() => {
+                console.log(`${focusKey} was focused`)
+            }}
+        >
+            {({ focused }) => (
+                <button
+                    style={{
+                        width,
+                        height,
+                        border: focused ? "2px solid tomato" : "none",
+                    }}
+                >
+                    {/* children can contain other focusable nodes */}
+                    {children}
+                </button>
+            )}
+        </Focusable>
     )
 }
 ```
