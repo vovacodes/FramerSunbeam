@@ -4,12 +4,15 @@
     "children" : [
 
     ],
+    "disableBackdropFilters" : false,
+    "duplicatedFrom" : null,
     "guidesX" : [
 
     ],
     "guidesY" : [
 
     ],
+    "homeNodeId" : null,
     "id" : "CAvdK_kJy",
     "name" : null,
     "originalid" : null,
@@ -22,5 +25,5 @@
     ],
     "visible" : false
   },
-  "version" : 55
+  "version" : 68
 }
