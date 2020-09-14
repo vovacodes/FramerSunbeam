@@ -21,7 +21,7 @@ Provides three easy to use code components.
 
 ## Example Project
 
-You can check out the example project that demonstrates how to set up Framer Sunbeam [here](https://framer.com/projects/Framer-Sunbeam-Examples-jtSRdSG3fWczUc5PUO84).
+You can check out the example project that demonstrates how to set up Framer Sunbeam [here](https://framer.com/projects/Framer-Sunbeam-Examples--jtSRdSG3fWczUc5PUO84-hVVTr).
 
 ## Components and API
 
