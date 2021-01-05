@@ -37,20 +37,22 @@ addPropertyControls(Scroll, {
         ] as any,
         defaultValue: "both",
     },
-    vertical_stickiness: {
+    verticalStickiness: {
         title: "↕ Stickiness",
         type: ControlType.Enum,
         options: ["auto", "top", "bottom"],
         optionTitles: ["Auto", "Top edge", "Bottom edge"],
+        defaultValue: "auto",
         hidden(props: Props) {
             return props.direction === "horizontal"
         },
     },
-    horizontal_stickiness: {
+    horizontalStickiness: {
         title: "↔Stickiness",
         type: ControlType.Enum,
         options: ["auto", "left", "right"],
         optionTitles: ["Auto", "Left edge", "Right edge"],
+        defaultValue: "auto",
         hidden(props: Props) {
             return props.direction === "vertical"
         },
@@ -73,8 +75,8 @@ interface Props {
     children: React.ReactElement
     overflow: boolean
     direction: "vertical" | "horizontal" | "both"
-    vertical_stickiness: "auto" | "top" | "bottom"
-    horizontal_stickiness: "auto" | "left" | "right"
+    verticalStickiness: "auto" | "top" | "bottom"
+    horizontalStickiness: "auto" | "left" | "right"
     background: string
     transition: Transition
 }
@@ -102,8 +104,8 @@ function DefaultScroll({
     children,
     overflow,
     direction,
-    vertical_stickiness,
-    horizontal_stickiness,
+    verticalStickiness,
+    horizontalStickiness,
     background,
     transition,
 }: Props) {
@@ -160,7 +162,7 @@ function DefaultScroll({
                 let deltaScrollX = 0
 
                 if (
-                    horizontal_stickiness === "auto" ||
+                    horizontalStickiness === "auto" ||
                     elementWidth <= viewportWidth
                 ) {
                     if (elementLeft < viewportLeft) {
@@ -171,12 +173,12 @@ function DefaultScroll({
                     }
                 } else {
                     // if there is not enough space for the whole element to fit within the viewport
-                    if (horizontal_stickiness === "left") {
-                        // and `horizontal_stickiness === "left"` align the element's
+                    if (horizontalStickiness === "left") {
+                        // and `horizontalStickiness === "left"` align the element's
                         // left edge too the left of the viewport
                         deltaScrollX = (elementLeft - viewportLeft) / scaleX
-                    } else if (horizontal_stickiness === "right") {
-                        // and `horizontal_stickiness === "right"` align the element's
+                    } else if (horizontalStickiness === "right") {
+                        // and `horizontalStickiness === "right"` align the element's
                         // right edge too the right of the viewport
                         deltaScrollX =
                             (elementRightEdge - viewportWidth) / scaleX
@@ -203,7 +205,7 @@ function DefaultScroll({
                 let deltaScrollY = 0
 
                 if (
-                    vertical_stickiness === "auto" ||
+                    verticalStickiness === "auto" ||
                     elementHeight <= viewportHeight
                 ) {
                     if (elementTop < viewportTop) {
@@ -214,11 +216,11 @@ function DefaultScroll({
                     }
                 } else {
                     // if there is not enough space for the whole element to fit within the viewport
-                    if (vertical_stickiness === "top") {
+                    if (verticalStickiness === "top") {
                         // and `stickiness === "top"` align the element's
                         // top edge too the top of the viewport
                         deltaScrollY = (elementTop - viewportTop) / scaleY
-                    } else if (vertical_stickiness === "bottom") {
+                    } else if (verticalStickiness === "bottom") {
                         // and `stickiness === "bottom"` align the element's
                         // bottom edge too the bottom of the viewport
                         deltaScrollY =

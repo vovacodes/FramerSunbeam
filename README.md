@@ -186,7 +186,7 @@ function FocusableContainerOverride(): Override {
 
 ### `Scroll`
 
-Mimics the behaviour of the Framer built-in `Scroll` component but it is aware
+Mimics the behaviour of the Framer built-in `Scroll` component, but it is aware
 of the currently focused `Focusable` child and automatically scrolls it into view when needed.
 This component is useful for creating scrollable carousels and grids of `Focusable` components
 
@@ -200,7 +200,7 @@ Specifies whether the content overflowing the `Scroll` viewport should be visibl
 
 The allowed direction of scrolling
 
-##### **↕ Stickiness** - `vertical_stickiness: "auto" | "top" | "bottom"` - default `"auto"`
+##### **↕ Stickiness** - `verticalStickiness: "auto" | "top" | "bottom"` - default `"auto"`
 
 Controls the scrolling behaviour **when the focused `Focusable` is taller than the viewport of the `Scroll`**.
 
@@ -209,7 +209,7 @@ Controls the scrolling behaviour **when the focused `Focusable` is taller than t
 -   The `"top"` mode always aligns the `Focusable`'s top edge with the viewport's top disregarding of the scrolling direction.
 -   The `"bottom"` mode always aligns the `Focusable`'s bottom edge with the viewport's bottom disregarding of the scrolling direction.
 
-##### **↔ Stickiness** - `horizontal_stickiness: "auto" | "left" | "right"` - default `"auto"`
+##### **↔ Stickiness** - `horizontalStickiness: "auto" | "left" | "right"` - default `"auto"`
 
 Controls the scrolling behaviour **when the focused `Focusable` is wider than the viewport of the `Scroll`**.
 
@@ -326,6 +326,11 @@ export function Button({ focusKey, width, height, children }) {
 ```
 
 ## CHANGELOG
+
+### v1.48.0
+
+-   📜 Expose `Scroll` component for usage in code.
+-   🥢 Rename `vertical_stickiness` and `horizontal_stickiness` props to `verticalStickiness` and `horizontalStickiness`, respectively.
 
 ### v1.44.0
 
